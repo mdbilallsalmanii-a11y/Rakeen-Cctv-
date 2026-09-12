@@ -11,7 +11,7 @@
 </head>
 <body>
 <div class="top"><span>Secure Today • Safer Tomorrow</span><span>📞 +966 50 004 4203 • ✉ techrakeen26@gmail.com</span></div>
-<nav class="nav"><div class="logo">RAK<span>EEN</span></div><div class="links"><a href="#home">Home</a><a href="#products">Products</a><a href="#installation">Installation</a><a href="#appointment">Appointment</a><a href="#contact">Contact</a></div><a class="btn" href="#appointment">Book Installation</a> <button class="btn" onclick="openAdmin()">Admin Login</button></nav>
+<nav class="nav"><div class="logo">RAK<span>EEN</span></div><div class="links"><a href="#home">Home</a><a href="#products">Products</a><a href="#installation">Installation</a><a href="#appointment">Appointment</a><a href="#contact">Contact</a></div><a class="btn" href="#appointment">Book Installation</a> <button class="btn" onclick="adminLogin()">Admin Login</button></nav>
 <section class="hero" id="home"><div><div class="tag">SMART SECURITY SOLUTIONS</div><h1>A SAFER <span>TOMORROW</span><br>WITH RAKEEN</h1><p>Quality CCTV cameras, reliable security products and professional installation for homes, offices, shops and businesses.</p><a class="btn" href="#products">View Products →</a> <a class="btn" style="background:transparent;color:#fff;border:1px solid #fff;margin-left:8px" href="#appointment">Book Installation</a></div><div class="visual">📹</div></section>
 <section class="section" id="products"><div class="center"><div class="tag">OUR PRODUCTS</div><h2>CCTV & Security Products</h2><p class="sub">Products and prices are loaded from the online database, so the admin can add or change them without editing the website.</p></div><div class="center" style="margin:0 auto 22px;max-width:850px">
 <select id="categoryFilter" style="max-width:320px">
@@ -24,7 +24,34 @@
 <section class="admin" id="admin"><div class="adminbox"><h2>RAKEEN Admin Panel</h2><p class="muted">This panel uses Supabase. Add products and view customer appointments online after you enter your Supabase details in <b>config.js</b>.</p><div class="form"><div class="fields"><div><label>Product name</label><input id="pname"></div><div><label>Price ₹</label><input id="pprice" type="number"></div><div><label>Category</label><input id="pcat"></div><div><label>Product Photo URL</label><input id="picon" placeholder="https://...jpg"></div><div class="full"><label>Description</label><input id="pdesc"></div><div class="full"><button class="btn" onclick="addProduct()">+ Add Product</button></div></div></div><h3>Appointments</h3><div id="appointments" class="admin-list muted">Loading…</div><h3>Products</h3><div id="adminProducts" class="admin-list muted">Loading…</div></div></section>
 <footer class="footer" id="contact"><div class="footgrid"><div><div class="logo">RAK<span>EEN</span></div><p>Security solutions for a safer tomorrow.</p></div><div><h3>Quick Links</h3><p><a href="#products">Products</a></p><p><a href="#installation">Installation</a></p><p><a href="#appointment">Book Appointment</a></p></div><div><h3>Contact</h3><p>📞 +966 50 004 4203</p><p>✉ techrakeen26@gmail.com</p><p>📍 Al Kharj, King Fahad Road, end of factory wall, in front of SASCO station</p></div></div><div class="copy">© 2026 RAKEEN. All rights reserved.</div></footer>
 <a class="wa" href="https://wa.me/966500044203" target="_blank">☏</a>
-<script src="config.js"></script>
+<script src="config.js">
+<script>
+function adminLogin(){
+  const cfg = window.RAKEEN_CONFIG || {};
+  const password = prompt("Enter Admin Password:");
+  if (password === null) return;
+  if (!cfg.ADMIN_PASSWORD) {
+    alert("Admin password is not configured. Please check config.js.");
+    return;
+  }
+  if (password !== cfg.ADMIN_PASSWORD) {
+    alert("Wrong admin password.");
+    return;
+  }
+  if (typeof openAdmin === "function") {
+    openAdmin();
+  } else {
+    const panel = document.getElementById("adminPanel") || document.getElementById("admin");
+    if (panel) {
+      panel.style.display = "block";
+      panel.scrollIntoView({behavior:"smooth"});
+    } else {
+      alert("Admin panel code was not found on this page.");
+    }
+  }
+}
+</script>
+</script>
 <script>
 const cfg=window.RAKEEN_CONFIG||{};
 let client=null;
