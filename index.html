@@ -29,9 +29,34 @@
 .rk-voice-msg{display:none;text-align:center;margin-top:12px;font-weight:700;font-size:13px;color:#315a42}
 .rk-voice-msg.show{display:block}
 
-</style>
+.rk-login-box label{display:block;margin-top:10px;color:#24362c}.rk-login-box input{margin-bottom:4px}</style>
 </head>
 <body>
+
+
+<div id="rkEditModal" class="rk-login-overlay" onclick="if(event.target===this) closeEditProduct()">
+  <div class="rk-login-box" role="dialog" aria-modal="true">
+    <div class="rk-login-icon">✏️</div>
+    <h3>Edit Product</h3>
+    <p>Update the product details and save them online.</p>
+    <input id="rkEditId" type="hidden">
+    <label>Product name *</label>
+    <input id="rkEditName" placeholder="Product name">
+    <label>Price ₹ *</label>
+    <input id="rkEditPrice" type="number" min="0" placeholder="2499">
+    <label>Category</label>
+    <input id="rkEditCategory" placeholder="Camera / Wi-Fi / DVR">
+    <label>Product Photo URL</label>
+    <input id="rkEditIcon" placeholder="https://...jpg or 📷">
+    <label>Description</label>
+    <input id="rkEditDescription" placeholder="Short product description">
+    <div id="rkEditError" class="rk-login-error"></div>
+    <div class="rk-login-actions">
+      <button class="btn rk-cancel" type="button" onclick="closeEditProduct()">Cancel</button>
+      <button class="btn" type="button" onclick="saveEditedProduct()">💾 Save Changes</button>
+    </div>
+  </div>
+</div>
 
 <div id="rkLoginModal" class="rk-login-overlay" onclick="if(event.target===this) closeRkLogin()">
   <div class="rk-login-box" role="dialog" aria-modal="true" aria-labelledby="rkLoginTitle">
@@ -114,16 +139,23 @@
 <script>
 function rkSpeak(text){
   try{
-    if("speechSynthesis" in window){
-      window.speechSynthesis.cancel();
-      const u=new SpeechSynthesisUtterance(text);
-      u.lang="en-US";
-      u.rate=0.95;
-      u.volume=1;
-      window.speechSynthesis.speak(u);
-    }
+    if(!("speechSynthesis" in window)) return;
+    window.speechSynthesis.cancel();
+    const u=new SpeechSynthesisUtterance(text);
+    u.lang="en-IN";
+    u.rate=0.82;
+    u.pitch=1.0;
+    u.volume=1;
+    const voices=window.speechSynthesis.getVoices();
+    const indian=voices.find(v=>/^en-IN$/i.test(v.lang)) ||
+                 voices.find(v=>/India/i.test(v.name)) ||
+                 voices.find(v=>/^en-GB$/i.test(v.lang)) ||
+                 voices.find(v=>/^en-US$/i.test(v.lang));
+    if(indian) u.voice=indian;
+    window.speechSynthesis.speak(u);
   }catch(e){console.log("Voice unavailable",e);}
 }
+
 
 function adminLogin(){
   const modal=document.getElementById("rkLoginModal");
@@ -166,45 +198,36 @@ function submitRkLogin(){
   const err=document.getElementById("rkLoginError");
   const voice=document.getElementById("rkVoiceMsg");
   const panel=document.getElementById("admin");
-
-  if(!input) return;
-
-  const entered=String(input.value||"").trim();
+  const entered=String(input?.value||"").trim();
   const expected=String(cfg.ADMIN_PASSWORD||"").trim();
 
   if(!expected){
-    if(err){err.textContent="Admin password is not configured. Check config.js.";err.style.display="block";}
-    if(voice){voice.textContent="🔊 Admin password is not configured";voice.classList.add("show");}
-    rkSpeak("Admin password is not configured");
+    if(err){err.textContent="Admin password is not loaded. Please make sure config.js is in the same GitHub folder.";err.style.display="block";}
+    rkSpeak("The admin password is not loaded. Please check the configuration.");
     return;
   }
-
   if(entered!==expected){
     if(err){err.textContent="Wrong password. Please try again.";err.style.display="block";}
-    if(voice){voice.textContent="🔊 Wrong password";voice.classList.add("show");}
-    rkSpeak("Wrong password");
-    input.focus();
-    input.select();
+    if(voice){voice.textContent="🔊 Wrong password. Please try again.";voice.classList.add("show");}
+    rkSpeak("Wrong password. Please try again.");
+    input.focus(); input.select();
     return;
   }
-
   if(!panel){
-    if(err){err.textContent="Admin panel is missing from index.html.";err.style.display="block";}
-    if(voice){voice.textContent="🔊 Admin panel is unavailable";voice.classList.add("show");}
-    rkSpeak("Admin panel is unavailable");
+    if(err){err.textContent="Admin page is missing. Please upload the latest index.html.";err.style.display="block";}
+    rkSpeak("The admin page is not available. Please upload the latest website file.");
     return;
   }
-
-  if(voice){voice.textContent="🔊 Welcome to RAKEEN Admin";voice.classList.add("show");}
-  rkSpeak("Welcome to RAKEEN Admin");
+  if(voice){voice.textContent="🔊 Welcome to Rakeen Admin. Opening your dashboard.";voice.classList.add("show");}
+  rkSpeak("Welcome to Rakeen Admin. Opening your dashboard.");
   closeRkLogin();
-
-  setTimeout(()=>{
+  setTimeout(function(){
     openAdmin();
-    if(typeof loadAppointments==="function") loadAppointments();
-    if(typeof loadProducts==="function") loadProducts();
-  },250);
+    const p=document.getElementById("admin");
+    if(p) p.style.display="block";
+  },500);
 }
+
 
 </script>
 <script>
@@ -235,60 +258,73 @@ async function loadProducts(){if(!client){adminProducts.innerHTML='<div class="a
 <button class="btn danger" onclick="deleteProduct('${p.id}')">Delete</button>
 </div></div>`).join("")||'<div class="admin-empty">No products yet.</div>'}
 async function addProduct(){if(!client)return alert("First configure Supabase in config.js.");let p={name:pname.value.trim(),price:Number(pprice.value),category:pcat.value.trim(),icon:picon.value||"📷",description:pdesc.value.trim()};if(!p.name||!p.price)return alert("Product name and price are required.");let {error}=await client.from("products").insert(p);if(error)return alert(error.message);pname.value=pprice.value=pcat.value=picon.value=pdesc.value="";await loadProducts();alert("Product added online.")}
-async function editProduct(id){
+function openEditProduct(id){
   if(!client){ alert("Supabase is not connected yet."); return; }
   const p=allProducts.find(x=>String(x.id)===String(id));
-  if(!p){ alert("Product not found. Refresh the admin panel and try again."); return; }
+  if(!p){ alert("Product not found. Please refresh the Admin page."); return; }
+  document.getElementById("rkEditId").value=p.id;
+  document.getElementById("rkEditName").value=p.name||"";
+  document.getElementById("rkEditPrice").value=p.price??"";
+  document.getElementById("rkEditCategory").value=p.category||"";
+  document.getElementById("rkEditIcon").value=p.icon||"📷";
+  document.getElementById("rkEditDescription").value=p.description||"";
+  const er=document.getElementById("rkEditError"); if(er) er.style.display="none";
+  document.getElementById("rkEditModal").classList.add("show");
+}
 
-  const name=prompt("Product name", p.name||"");
-  if(name===null) return;
-  const priceText=prompt("Price ₹", p.price ?? "");
-  if(priceText===null) return;
-  const category=prompt("Category", p.category||"");
-  if(category===null) return;
-  const icon=prompt("Product Photo URL or emoji", p.icon||"📷");
-  if(icon===null) return;
-  const description=prompt("Description", p.description||"");
-  if(description===null) return;
+function closeEditProduct(){
+  const m=document.getElementById("rkEditModal");
+  if(m) m.classList.remove("show");
+}
 
-  const price=Number(priceText);
-  if(!name.trim() || !Number.isFinite(price) || price<0){
-    alert("Please enter a valid product name and price.");
+async function saveEditedProduct(){
+  const id=document.getElementById("rkEditId").value;
+  const name=document.getElementById("rkEditName").value.trim();
+  const price=Number(document.getElementById("rkEditPrice").value);
+  const category=document.getElementById("rkEditCategory").value.trim();
+  const icon=document.getElementById("rkEditIcon").value.trim()||"📷";
+  const description=document.getElementById("rkEditDescription").value.trim();
+  const er=document.getElementById("rkEditError");
+
+  if(!name || !Number.isFinite(price) || price<0){
+    if(er){er.textContent="Please enter a valid product name and price.";er.style.display="block";}
     return;
   }
-
   const {error}=await client.from("products").update({
-    name:name.trim(),
-    price:price,
-    category:category.trim(),
-    icon:icon.trim()||"📷",
-    description:description.trim()
+    name, price, category, icon, description
   }).eq("id",id);
 
   if(error){
-    alert("Could not update product: "+error.message);
+    if(er){er.textContent=error.message;er.style.display="block";}
+    rkSpeak("I could not save the product. Please check the connection.");
     return;
   }
-
+  closeEditProduct();
   await loadProducts();
-  rkSpeak("Product updated successfully");
+  rkSpeak("Product updated successfully. The changes are now live.");
   alert("Product updated online.");
 }
+
+async function editProduct(id){
+  openEditProduct(id);
+}
+
 
 async function deleteProduct(id){if(confirm("Delete this product?")){let {error}=await client.from("products").delete().eq("id",id);if(error)alert(error.message);else loadProducts()}}
 bookingForm.addEventListener("submit",async e=>{e.preventDefault();let x={name:name.value,phone:phone.value,date:date.value,time:time.value,service:service.value,cameras:cams.value,address:address.value};if(!client){localStorage.setItem("rakeen_pending",JSON.stringify(x));msg.textContent="Demo appointment saved. Configure Supabase to make it visible to the admin online.";msg.style.display="block";return}let {error}=await client.from("appointments").insert(x);if(error){msg.textContent=error.message;msg.style.display="block";return}msg.textContent="Appointment received successfully. RAKEEN will contact you to confirm.";msg.style.display="block";bookingForm.reset();});
 async function loadAppointments(){if(!client){appointments.innerHTML='<div class="admin-empty">Supabase is not connected yet.</div>';appointmentCount.textContent="0";return}let {data,error}=await client.from("appointments").select("*").order("created_at",{ascending:false});if(error){appointments.textContent=error.message;return}appointmentCount.textContent=(data||[]).length;appointments.innerHTML=(data||[]).map(x=>`<div class="item"><div><b>${x.name}</b> • ${x.phone}<br>📅 ${x.date} ${x.time} • ${x.service} • ${x.cameras}<br>📍 ${x.address}</div></div>`).join("")||'<div class="admin-empty">No appointments yet.</div>'}
 function openAdmin(){
   const panel=document.getElementById("admin");
-  if(!panel){ alert("Admin panel could not be found on this page."); return; }
+  if(!panel){ alert("Admin panel could not be found. Upload the latest index.html."); return; }
   panel.classList.add("open");
   panel.style.display="block";
   const status=document.getElementById("connectionStatus");
-  if(status) status.textContent=(typeof client!=="undefined" && client)?"Online":"Demo";
+  if(status) status.textContent=(client)?"Online":"Connecting…";
   panel.scrollIntoView({behavior:"smooth",block:"start"});
   if(typeof loadAppointments==="function") loadAppointments();
   if(typeof loadProducts==="function") loadProducts();
 }
+
 function closeAdmin(){
   const panel=document.getElementById("admin");
   if(panel){
