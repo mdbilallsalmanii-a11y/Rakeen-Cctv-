@@ -28,6 +28,16 @@
 
 
 .rk-login-box label{display:block;margin-top:10px;color:#24362c}.rk-login-box input{margin-bottom:4px}
+
+.rk-product-box{position:relative;max-width:720px!important;width:min(92vw,720px)!important;padding:18px!important;overflow:hidden}
+.rk-product-close{position:absolute;right:12px;top:8px;width:38px;height:38px;border:0;border-radius:50%;background:#f1ebf6;color:#3b2450;font-size:28px;line-height:1;cursor:pointer;z-index:2}
+.rk-product-image{height:320px;border-radius:16px;background:#faf7fd;display:flex;align-items:center;justify-content:center;overflow:hidden;border:1px solid #eadff1}
+.rk-product-image img{width:100%;height:100%;object-fit:contain}
+.rk-product-content{padding:18px 6px 5px}
+.rk-product-content h3{font-size:28px;margin:7px 0 10px}
+.rk-product-description{white-space:pre-wrap;color:#5f5368;line-height:1.7;font-size:15px;margin:0}
+.card{cursor:pointer}
+@media(max-width:700px){.rk-product-image{height:250px}.rk-product-content h3{font-size:23px}}
 /* RAKEEN PURPLE THEME + REFRESHED LOOK */
 :root{--g:#a855f7;--d:#12091f;--d2:#1b0d2e;--bg:#f7f3fb;--mut:#6f6478}
 body{background:var(--bg);color:#21172b}
@@ -60,6 +70,8 @@ input:focus,select:focus,textarea:focus{outline:none;border-color:#8b5cf6;box-sh
 .rk-pass-wrap input:focus{border-color:#8b5cf6;box-shadow:0 0 0 3px rgba(139,92,246,.10)}
 .rk-cancel{background:#f1ebf6!important;color:#3b2450!important}
 .footer{background:#0d0615}.copy{border-top-color:#352044}
+
+.price-control{display:flex;align-items:center;justify-content:space-between;gap:14px;margin:0 0 18px;padding:14px 16px;border:1px solid #e7d9ef;border-radius:14px;background:#fbf8fd}.toggle-btn{border:0;border-radius:999px;padding:7px 12px;min-width:76px;background:#ddd;color:#4b3a55;font-weight:800;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:7px}.toggle-btn.on{background:#7c3aed;color:#fff}.toggle-dot{width:12px;height:12px;border-radius:50%;background:#fff;box-shadow:0 1px 3px #777}.rk-price{font-weight:800;color:#6d28d9;font-size:18px;margin-top:7px}.rk-product-price{font-weight:800;color:#6d28d9;font-size:22px;margin:4px 0 12px}
 </style>
 </head>
 <body>
@@ -73,8 +85,8 @@ input:focus,select:focus,textarea:focus{outline:none;border-color:#8b5cf6;box-sh
     <input id="rkEditId" type="hidden">
     <label>Product name *</label>
     <input id="rkEditName" placeholder="Product name">
-    <label>Price ₹ *</label>
-    <input id="rkEditPrice" type="number" min="0" placeholder="2499">
+    <label>Price (Saudi Riyal)</label>
+    <input id="rkEditPrice" type="number" min="0" step="0.01" placeholder="e.g. 299">
     <label>Category</label>
     <input id="rkEditCategory" placeholder="Camera / Wi-Fi / DVR">
     <label>Product Photo</label>
@@ -88,6 +100,19 @@ input:focus,select:focus,textarea:focus{outline:none;border-color:#8b5cf6;box-sh
     <div class="rk-login-actions">
       <button class="btn rk-cancel" type="button" onclick="closeEditProduct()">Cancel</button>
       <button class="btn" type="button" onclick="saveEditedProduct()">💾 Save Changes</button>
+    </div>
+  </div>
+</div>
+
+<div id="rkProductModal" class="rk-login-overlay" onclick="if(event.target===this) closeProductDetails()">
+  <div class="rk-login-box rk-product-box" role="dialog" aria-modal="true" aria-labelledby="rkProductTitle">
+    <button type="button" class="rk-product-close" onclick="closeProductDetails()">×</button>
+    <div id="rkProductImage" class="rk-product-image"></div>
+    <div class="rk-product-content">
+      <div class="tag" id="rkProductCategory"></div>
+      <h3 id="rkProductTitle">Product</h3>
+      <div id="rkProductPrice" class="rk-product-price"></div>
+      <p id="rkProductDescription" class="rk-product-description"></p>
     </div>
   </div>
 </div>
@@ -113,7 +138,7 @@ input:focus,select:focus,textarea:focus{outline:none;border-color:#8b5cf6;box-sh
 <div class="top"><span>Secure Today • Safer Tomorrow</span><span>📞 +966 50 004 4203 • ✉ techrakeen26@gmail.com</span></div>
 <nav class="nav"><div class="logo">RAK<span>EEN</span></div><div class="links"><a href="#home">Home</a><a href="#products">Products</a><a href="#installation">Installation</a><a href="#appointment">Appointment</a><a href="#contact">Contact</a></div><a class="btn" href="#appointment">Book Installation</a> <button class="btn" onclick="adminLogin()">Admin Login</button></nav>
 <section class="hero" id="home"><div><div class="tag">SMART SECURITY SOLUTIONS</div><h1>A SAFER <span>TOMORROW</span><br>WITH RAKEEN</h1><p>Quality CCTV cameras, reliable security products and professional installation for homes, offices, shops and businesses.</p><a class="btn" href="#products">View Products →</a> <a class="btn" style="background:transparent;color:#fff;border:1px solid #fff;margin-left:8px" href="#appointment">Book Installation</a></div><div class="visual" id="heroVisual">📹</div></section>
-<section class="section" id="products"><div class="center"><div class="tag">OUR PRODUCTS</div><h2>CCTV & Security Products</h2><p class="sub">Products and prices are loaded from the online database, so the admin can add or change them without editing the website.</p></div><div class="center" style="margin:0 auto 22px;max-width:850px">
+<section class="section" id="products"><div class="center"><div class="tag">OUR PRODUCTS</div><h2>CCTV & Security Products</h2><p class="sub">Products are loaded from the online database, so the admin can add or change them without editing the website.</p></div><div class="center" style="margin:0 auto 22px;max-width:850px">
 <select id="categoryFilter" style="max-width:320px">
 <option value="">All Categories</option>
 </select>
@@ -154,10 +179,11 @@ input:focus,select:focus,textarea:focus{outline:none;border-color:#8b5cf6;box-sh
   <div class="admin-card">
     <h3>➕ Add New Product</h3>
     <p class="hint">Enter the product details below. It will appear on the customer website after saving.</p>
+    <div class="price-control"><div><b>💰 Customer Price</b><div class="hint" style="margin:3px 0 0">Turn ON to show prices on the customer website.</div></div><button type="button" id="priceToggle" class="toggle-btn" onclick="togglePriceDisplay()"><span class="toggle-dot"></span><span id="priceToggleText">OFF</span></button></div>
     <div class="form admin-form">
       <div class="fields">
         <div><label>Product name *</label><input id="pname" placeholder="e.g. 4MP Dome Camera"></div>
-        <div><label>Price ₹ *</label><input id="pprice" type="number" min="0" placeholder="2499"></div>
+        <div><label>Price (Saudi Riyal)</label><input id="pprice" type="number" min="0" step="0.01" placeholder="e.g. 299"></div>
         <div><label>Category</label><input id="pcat" placeholder="Wi-Fi / Camera / DVR"></div>
         <div><label>Product Photo</label><input id="piconFile" type="file" accept="image/*"><small class="muted">📱 Gallery se photo select karo</small></div>
         <div><label>Photo URL (optional)</label><input id="picon" placeholder="https://...jpg"></div>
@@ -257,6 +283,20 @@ async function init(){
 }
 const demo=[["Dome Camera",2499,"Dome","📷","Reliable indoor CCTV camera."],["Bullet Camera",2999,"Bullet","📹","Outdoor camera with clear night vision."],["PTZ Camera",8999,"PTZ","🎥","Pan, tilt and zoom security."],["NVR/DVR System",4999,"NVR/DVR","💾","Reliable video storage and recording."]];
 let allProducts=[];
+let showPrices=false;
+function priceText(p){ const n=Number(p?.price||0); return n>0 ? n.toLocaleString("en-SA",{minimumFractionDigits:0,maximumFractionDigits:2})+" ر.س" : ""; }
+function updatePriceToggle(){ const b=document.getElementById("priceToggle"),t=document.getElementById("priceToggleText"); if(b)b.classList.toggle("on",showPrices); if(t)t.textContent=showPrices?"ON":"OFF"; }
+async function savePriceSetting(){
+ if(!client)return;
+ const desc=JSON.stringify({showPrice:showPrices});
+ const {data}=await client.from("products").select("id").eq("name","__RAKEEN_SETTINGS__").limit(1).maybeSingle();
+ let r;
+ if(data) r=await client.from("products").update({price:0,category:"__SITE__",icon:"",description:desc}).eq("id",data.id);
+ else r=await client.from("products").insert({name:"__RAKEEN_SETTINGS__",price:0,category:"__SITE__",icon:"",description:desc});
+ if(r?.error) throw r.error;
+}
+async function togglePriceDisplay(){ showPrices=!showPrices; updatePriceToggle(); if(!client)return; try{await savePriceSetting(); renderCards(allProducts); alert(showPrices?"Prices are now ON for customers.":"Prices are now OFF for customers.");}catch(e){showPrices=!showPrices;updatePriceToggle();alert(e.message);} }
+
 function renderCards(rows){
  allProducts=rows||[];
  const cats=[...new Set(allProducts.map(p=>p.category).filter(Boolean))];
@@ -265,14 +305,32 @@ function renderCards(rows){
  categoryFilter.innerHTML='<option value="">All Categories</option>'+cats.map(c=>`<option>${c}</option>`).join("");
  const selected=categoryFilter.value||"";
  const shown=selected?allProducts.filter(p=>p.category===selected):allProducts;
- productGrid.innerHTML=shown.map(p=>{
+ productGrid.innerHTML=shown.map((p,i)=>{
   const pic=(p.icon||"").trim();
-  const visual=(/^https?:\/\//i.test(pic)||/^data:image\//i.test(pic))?`<img src="${pic}" alt="${p.name}" style="width:100%;height:100%;object-fit:cover;border-radius:11px">`:pic||"📷";
-  return `<div class="card"><div class="pic">${visual}</div><h3>${p.name}</h3><div class="muted">${p.category||""}</div><p class="muted">${p.description||""}</p><div class="price">₹${Number(p.price).toLocaleString("en-IN")}</div></div>`;
+  const visual=(/^https?:\/\//i.test(pic)||/^data:image\//i.test(pic))?`<img src="${pic}" alt="${p.name}" style="width:100%;height:100%;object-fit:contain;border-radius:11px">`:pic||"📷";
+  const ref=JSON.stringify(String(p.id ?? p.name ?? i));
+  const price=showPrices&&Number(p.price||0)>0?`<div class="rk-price">${priceText(p)}</div>`:"";
+  return `<div class="card" onclick="openProductDetails(${ref})" role="button" tabindex="0" onkeydown="if(event.key==='Enter'||event.key===' ')openProductDetails(${ref})"><div class="pic">${visual}</div><h3>${p.name}</h3><div class="muted">${p.category||""}</div>${price}<p class="muted">${p.description||"Click to view full description"}</p></div>`;
  }).join("")||'<p class="muted">No products in this category.</p>';
 }
+function openProductDetails(id){
+ const p=allProducts.find(x=>String(x.id??x.name)===String(id));
+ if(!p) return;
+ const pic=(p.icon||"").trim();
+ const imageEl=document.getElementById("rkProductImage");
+ imageEl.innerHTML=(/^https?:\/\//i.test(pic)||/^data:image\//i.test(pic))?`<img src="${pic}" alt="${p.name}">`:`<div style="font-size:100px">${pic||"📷"}</div>`;
+ document.getElementById("rkProductTitle").textContent=p.name||"Product";
+ document.getElementById("rkProductCategory").textContent=p.category||"";
+ document.getElementById("rkProductPrice").textContent=showPrices?priceText(p):"";
+ document.getElementById("rkProductDescription").textContent=p.description||"No description available.";
+ document.getElementById("rkProductModal").classList.add("show");
+}
+function closeProductDetails(){
+ const m=document.getElementById("rkProductModal");
+ if(m) m.classList.remove("show");
+}
 document.getElementById("categoryFilter").addEventListener("change",()=>renderCards(allProducts));
-function renderDemo(){renderCards(demo.map(x=>({name:x[0],price:x[1],category:x[2],icon:x[3],description:x[4]})))}
+function renderDemo(){showPrices=false;updatePriceToggle();renderCards(demo.map(x=>({name:x[0],price:x[1],category:x[2],icon:x[3],description:x[4]})))}
 async function loadProducts(){
  const adminProductsEl=document.getElementById("adminProducts");
  const productCountEl=document.getElementById("productCount");
@@ -286,11 +344,14 @@ async function loadProducts(){
    if(adminProductsEl) adminProductsEl.innerHTML='<div class="admin-empty">'+error.message+'</div>';
    return;
  }
- renderCards(data||[]);
+ const settings=(data||[]).find(p=>p.name==="__RAKEEN_SETTINGS__");
+ try{showPrices=!!JSON.parse(settings?.description||"{}").showPrice;}catch(e){showPrices=false;}
+ updatePriceToggle();
+ const normalProducts=(data||[]).filter(p=>p.name!=="__RAKEEN_HERO__"&&p.name!=="__RAKEEN_SETTINGS__");
+ renderCards(normalProducts);
  await loadHeroPhoto();
- const normalProducts=(data||[]).filter(p=>p.name!=="__RAKEEN_HERO__");
  if(productCountEl) productCountEl.textContent=normalProducts.length;
- if(adminProductsEl) adminProductsEl.innerHTML=normalProducts.map(p=>`<div class="item"><div><b>${p.name}</b><br><span class="muted">₹${Number(p.price).toLocaleString("en-IN")} • ${p.category||"Uncategorized"}</span></div><div style="display:flex;gap:8px;flex-wrap:wrap"><button type="button" class="btn" style="background:#0b3b22;color:#fff" onclick="openEditProduct('${p.id}')">✏️ Edit Product</button><button class="btn danger" onclick="deleteProduct('${p.id}')">Delete</button></div></div>`).join("")||'<div class="admin-empty">No products yet.</div>';
+ if(adminProductsEl) adminProductsEl.innerHTML=normalProducts.map(p=>`<div class="item"><div><b>${p.name}</b><br><span class="muted">${p.category||"Uncategorized"}</span></div><div style="display:flex;gap:8px;flex-wrap:wrap"><button type="button" class="btn" style="background:#0b3b22;color:#fff" onclick="openEditProduct('${p.id}')">✏️ Edit Product</button><button class="btn danger" onclick="deleteProduct('${p.id}')">Delete</button></div></div>`).join("")||'<div class="admin-empty">No products yet.</div>';
 }
 function compressProductImage(file){
  return new Promise((resolve,reject)=>{
@@ -349,10 +410,10 @@ async function removeHeroPhoto(){
 async function addProduct(){
  const nameEl=document.getElementById("pname"), priceEl=document.getElementById("pprice"), catEl=document.getElementById("pcat"), iconEl=document.getElementById("picon"), fileEl=document.getElementById("piconFile"), descEl=document.getElementById("pdesc");
  if(!client) return alert("Supabase is not connected. Please check config.js.");
- if(!nameEl.value.trim()||!Number.isFinite(Number(priceEl.value))||Number(priceEl.value)<0) return alert("Product name and price are required.");
+ if(!nameEl.value.trim()) return alert("Product name is required.");
  let icon=iconEl.value.trim()||"📷";
  try{ if(fileEl.files[0]) icon=await compressProductImage(fileEl.files[0]); }catch(e){ return alert(e.message); }
- const p={name:nameEl.value.trim(),price:Number(priceEl.value),category:catEl.value.trim(),icon,description:descEl.value.trim()};
+ const p={name:nameEl.value.trim(),price:Number(priceEl.value||0),category:catEl.value.trim(),icon,description:descEl.value.trim()};
  const {error}=await client.from("products").insert(p);
  if(error) return alert(error.message);
  nameEl.value="";priceEl.value="";catEl.value="";iconEl.value="";fileEl.value="";descEl.value="";
@@ -365,7 +426,7 @@ function openEditProduct(id){
   if(!p){ alert("Product not found. Please refresh the Admin page."); return; }
   document.getElementById("rkEditId").value=p.id;
   document.getElementById("rkEditName").value=p.name||"";
-  document.getElementById("rkEditPrice").value=p.price??"";
+  document.getElementById("rkEditPrice").value=Number(p.price||0);
   document.getElementById("rkEditCategory").value=p.category||"";
   document.getElementById("rkEditIcon").value=p.icon||"📷";
   document.getElementById("rkEditDescription").value=p.description||"";
@@ -381,7 +442,7 @@ function closeEditProduct(){
 async function saveEditedProduct(){
   const id=document.getElementById("rkEditId").value;
   const name=document.getElementById("rkEditName").value.trim();
-  const price=Number(document.getElementById("rkEditPrice").value);
+  const price=Number(document.getElementById("rkEditPrice").value||0);
   const category=document.getElementById("rkEditCategory").value.trim();
   let icon=document.getElementById("rkEditIcon").value.trim()||"📷";
   const photoEl=document.getElementById("rkEditPhoto");
@@ -389,8 +450,8 @@ async function saveEditedProduct(){
   if(photoEl && photoEl.files[0]){ try{ icon=await compressProductImage(photoEl.files[0]); }catch(e){ if(er){er.textContent=e.message;er.style.display="block";} return; } }
   const description=document.getElementById("rkEditDescription").value.trim();
 
-  if(!name || !Number.isFinite(price) || price<0){
-    if(er){er.textContent="Please enter a valid product name and price.";er.style.display="block";}
+  if(!name){
+    if(er){er.textContent="Product name is required.";er.style.display="block";}
     return;
   }
   const {error}=await client.from("products").update({
