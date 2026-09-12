@@ -112,26 +112,6 @@
 <a class="wa" href="https://wa.me/966500044203" target="_blank">☏</a>
 <script src="config.js"></script>
 <script>
-function adminLogin(){
-  const modal=document.getElementById("rkLoginModal");
-  const input=document.getElementById("rkAdminPassword");
-  const err=document.getElementById("rkLoginError");
-  if(!modal) return;
-  modal.classList.add("show");
-  err.style.display="none";
-  input.value="";
-  setTimeout(()=>input.focus(),80);
-}
-function closeRkLogin(){
-  const modal=document.getElementById("rkLoginModal");
-  if(modal) modal.classList.remove("show");
-}
-function toggleRkPassword(){
-  const input=document.getElementById("rkAdminPassword");
-  const eye=document.querySelector(".rk-eye");
-  if(input.type==="password"){input.type="text";eye.textContent="🙈";eye.setAttribute("aria-label","Hide password")}
-  else{input.type="password";eye.textContent="👁️";eye.setAttribute("aria-label","Show password")}
-}
 function rkSpeak(text){
   try{
     if("speechSynthesis" in window){
@@ -139,44 +119,93 @@ function rkSpeak(text){
       const u=new SpeechSynthesisUtterance(text);
       u.lang="en-US";
       u.rate=0.95;
+      u.volume=1;
       window.speechSynthesis.speak(u);
     }
-  }catch(e){ console.log("Voice unavailable",e); }
+  }catch(e){console.log("Voice unavailable",e);}
 }
+
+function adminLogin(){
+  const modal=document.getElementById("rkLoginModal");
+  const input=document.getElementById("rkAdminPassword");
+  const err=document.getElementById("rkLoginError");
+  const voice=document.getElementById("rkVoiceMsg");
+  if(!modal||!input) return;
+  modal.classList.add("show");
+  if(err) err.style.display="none";
+  if(voice){voice.textContent="🔊 Please enter admin password";voice.classList.add("show");}
+  input.value="";
+  input.type="password";
+  const eye=document.querySelector(".rk-eye");
+  if(eye){eye.textContent="👁️";eye.setAttribute("aria-label","Show password");}
+  setTimeout(()=>input.focus(),100);
+  rkSpeak("Please enter admin password");
+}
+
+function closeRkLogin(){
+  const modal=document.getElementById("rkLoginModal");
+  if(modal) modal.classList.remove("show");
+}
+
+function toggleRkPassword(){
+  const input=document.getElementById("rkAdminPassword");
+  const eye=document.querySelector(".rk-eye");
+  if(!input) return;
+  if(input.type==="password"){
+    input.type="text";
+    if(eye){eye.textContent="🙈";eye.setAttribute("aria-label","Hide password");}
+  }else{
+    input.type="password";
+    if(eye){eye.textContent="👁️";eye.setAttribute("aria-label","Show password");}
+  }
+}
+
 function submitRkLogin(){
   const cfg=window.RAKEEN_CONFIG||{};
   const input=document.getElementById("rkAdminPassword");
   const err=document.getElementById("rkLoginError");
   const voice=document.getElementById("rkVoiceMsg");
-  if(!cfg.ADMIN_PASSWORD){
-    err.textContent="Admin password is not configured. Please check config.js.";
-    err.style.display="block";
-    if(voice){voice.textContent="🔊 Password is not configured.";voice.classList.add("show");}
-    rkSpeak("Admin password is not configured.");
+  const panel=document.getElementById("admin");
+
+  if(!input) return;
+
+  const entered=String(input.value||"").trim();
+  const expected=String(cfg.ADMIN_PASSWORD||"").trim();
+
+  if(!expected){
+    if(err){err.textContent="Admin password is not configured. Check config.js.";err.style.display="block";}
+    if(voice){voice.textContent="🔊 Admin password is not configured";voice.classList.add("show");}
+    rkSpeak("Admin password is not configured");
     return;
   }
-  if(input.value!==cfg.ADMIN_PASSWORD){
-    err.textContent="Wrong password. Please try again.";
-    err.style.display="block";
+
+  if(entered!==expected){
+    if(err){err.textContent="Wrong password. Please try again.";err.style.display="block";}
     if(voice){voice.textContent="🔊 Wrong password";voice.classList.add("show");}
     rkSpeak("Wrong password");
     input.focus();
     input.select();
     return;
   }
-  const panel=document.getElementById("admin");
+
   if(!panel){
-    err.textContent="Admin panel is missing from index.html.";
-    err.style.display="block";
-    if(voice){voice.textContent="🔊 Admin panel is unavailable.";voice.classList.add("show");}
-    rkSpeak("Admin panel is unavailable.");
+    if(err){err.textContent="Admin panel is missing from index.html.";err.style.display="block";}
+    if(voice){voice.textContent="🔊 Admin panel is unavailable";voice.classList.add("show");}
+    rkSpeak("Admin panel is unavailable");
     return;
   }
+
   if(voice){voice.textContent="🔊 Welcome to RAKEEN Admin";voice.classList.add("show");}
   rkSpeak("Welcome to RAKEEN Admin");
   closeRkLogin();
-  setTimeout(()=>openAdmin(),250);
+
+  setTimeout(()=>{
+    openAdmin();
+    if(typeof loadAppointments==="function") loadAppointments();
+    if(typeof loadProducts==="function") loadProducts();
+  },250);
 }
+
 </script>
 <script>
 const cfg=window.RAKEEN_CONFIG||{};
@@ -201,24 +230,64 @@ function renderCards(rows){
 }
 categoryFilter.addEventListener("change",()=>renderCards(allProducts));
 function renderDemo(){renderCards(demo.map(x=>({name:x[0],price:x[1],category:x[2],icon:x[3],description:x[4]})))}
-async function loadProducts(){if(!client){adminProducts.innerHTML='<div class="admin-empty">Supabase is not connected yet.</div>';productCount.textContent=allProducts.length;return}let {data,error}=await client.from("products").select("*").order("created_at",{ascending:false});if(error){adminProducts.innerHTML='<div class="admin-empty">'+error.message+'</div>';return}renderCards(data||[]);productCount.textContent=(data||[]).length;adminProducts.innerHTML=(data||[]).map(p=>`<div class="item"><div><b>${p.name}</b><br><span class="muted">₹${Number(p.price).toLocaleString("en-IN")} • ${p.category||"Uncategorized"}</span></div><button class="btn danger" onclick="deleteProduct('${p.id}')">Delete</button></div>`).join("")||'<div class="admin-empty">No products yet.</div>'}
+async function loadProducts(){if(!client){adminProducts.innerHTML='<div class="admin-empty">Supabase is not connected yet.</div>';productCount.textContent=allProducts.length;return}let {data,error}=await client.from("products").select("*").order("created_at",{ascending:false});if(error){adminProducts.innerHTML='<div class="admin-empty">'+error.message+'</div>';return}renderCards(data||[]);productCount.textContent=(data||[]).length;adminProducts.innerHTML=(data||[]).map(p=>`<div class="item"><div><b>${p.name}</b><br><span class="muted">₹${Number(p.price).toLocaleString("en-IN")} • ${p.category||"Uncategorized"}</span></div><div style="display:flex;gap:8px;flex-wrap:wrap">
+<button class="btn" onclick="editProduct('${p.id}')">✏️ Edit</button>
+<button class="btn danger" onclick="deleteProduct('${p.id}')">Delete</button>
+</div></div>`).join("")||'<div class="admin-empty">No products yet.</div>'}
 async function addProduct(){if(!client)return alert("First configure Supabase in config.js.");let p={name:pname.value.trim(),price:Number(pprice.value),category:pcat.value.trim(),icon:picon.value||"📷",description:pdesc.value.trim()};if(!p.name||!p.price)return alert("Product name and price are required.");let {error}=await client.from("products").insert(p);if(error)return alert(error.message);pname.value=pprice.value=pcat.value=picon.value=pdesc.value="";await loadProducts();alert("Product added online.")}
+async function editProduct(id){
+  if(!client){ alert("Supabase is not connected yet."); return; }
+  const p=allProducts.find(x=>String(x.id)===String(id));
+  if(!p){ alert("Product not found. Refresh the admin panel and try again."); return; }
+
+  const name=prompt("Product name", p.name||"");
+  if(name===null) return;
+  const priceText=prompt("Price ₹", p.price ?? "");
+  if(priceText===null) return;
+  const category=prompt("Category", p.category||"");
+  if(category===null) return;
+  const icon=prompt("Product Photo URL or emoji", p.icon||"📷");
+  if(icon===null) return;
+  const description=prompt("Description", p.description||"");
+  if(description===null) return;
+
+  const price=Number(priceText);
+  if(!name.trim() || !Number.isFinite(price) || price<0){
+    alert("Please enter a valid product name and price.");
+    return;
+  }
+
+  const {error}=await client.from("products").update({
+    name:name.trim(),
+    price:price,
+    category:category.trim(),
+    icon:icon.trim()||"📷",
+    description:description.trim()
+  }).eq("id",id);
+
+  if(error){
+    alert("Could not update product: "+error.message);
+    return;
+  }
+
+  await loadProducts();
+  rkSpeak("Product updated successfully");
+  alert("Product updated online.");
+}
+
 async function deleteProduct(id){if(confirm("Delete this product?")){let {error}=await client.from("products").delete().eq("id",id);if(error)alert(error.message);else loadProducts()}}
 bookingForm.addEventListener("submit",async e=>{e.preventDefault();let x={name:name.value,phone:phone.value,date:date.value,time:time.value,service:service.value,cameras:cams.value,address:address.value};if(!client){localStorage.setItem("rakeen_pending",JSON.stringify(x));msg.textContent="Demo appointment saved. Configure Supabase to make it visible to the admin online.";msg.style.display="block";return}let {error}=await client.from("appointments").insert(x);if(error){msg.textContent=error.message;msg.style.display="block";return}msg.textContent="Appointment received successfully. RAKEEN will contact you to confirm.";msg.style.display="block";bookingForm.reset();});
 async function loadAppointments(){if(!client){appointments.innerHTML='<div class="admin-empty">Supabase is not connected yet.</div>';appointmentCount.textContent="0";return}let {data,error}=await client.from("appointments").select("*").order("created_at",{ascending:false});if(error){appointments.textContent=error.message;return}appointmentCount.textContent=(data||[]).length;appointments.innerHTML=(data||[]).map(x=>`<div class="item"><div><b>${x.name}</b> • ${x.phone}<br>📅 ${x.date} ${x.time} • ${x.service} • ${x.cameras}<br>📍 ${x.address}</div></div>`).join("")||'<div class="admin-empty">No appointments yet.</div>'}
 function openAdmin(){
   const panel=document.getElementById("admin");
-  if(!panel){
-    alert("Admin panel could not be found on this page.");
-    return;
-  }
+  if(!panel){ alert("Admin panel could not be found on this page."); return; }
   panel.classList.add("open");
   panel.style.display="block";
   const status=document.getElementById("connectionStatus");
   if(status) status.textContent=(typeof client!=="undefined" && client)?"Online":"Demo";
   panel.scrollIntoView({behavior:"smooth",block:"start"});
-  try{ loadAppointments(); }catch(e){ console.error(e); }
-  try{ loadProducts(); }catch(e){ console.error(e); }
+  if(typeof loadAppointments==="function") loadAppointments();
+  if(typeof loadProducts==="function") loadProducts();
 }
 function closeAdmin(){
   const panel=document.getElementById("admin");
