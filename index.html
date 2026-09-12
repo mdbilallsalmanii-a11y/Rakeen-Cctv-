@@ -284,7 +284,7 @@ async function init(){
 const demo=[["Dome Camera",2499,"Dome","📷","Reliable indoor CCTV camera."],["Bullet Camera",2999,"Bullet","📹","Outdoor camera with clear night vision."],["PTZ Camera",8999,"PTZ","🎥","Pan, tilt and zoom security."],["NVR/DVR System",4999,"NVR/DVR","💾","Reliable video storage and recording."]];
 let allProducts=[];
 let showPrices=false;
-function priceText(p){ const n=Number(p?.price||0); return n>0 ? n.toLocaleString("en-SA",{minimumFractionDigits:0,maximumFractionDigits:2})+" ر.س" : ""; }
+function priceText(p){ const n=Number(p?.price||0); return n>0 ? n.toLocaleString("en-SA",{minimumFractionDigits:0,maximumFractionDigits:2})+" SAR" : ""; }
 function updatePriceToggle(){ const b=document.getElementById("priceToggle"),t=document.getElementById("priceToggleText"); if(b)b.classList.toggle("on",showPrices); if(t)t.textContent=showPrices?"ON":"OFF"; }
 async function savePriceSetting(){
  if(!client)return;
