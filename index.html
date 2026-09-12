@@ -139,23 +139,23 @@
 <script>
 function rkSpeak(text){
   try{
-    if(!("speechSynthesis" in window)) return;
+    if(!('speechSynthesis' in window)) return;
     window.speechSynthesis.cancel();
     const u=new SpeechSynthesisUtterance(text);
-    u.lang="en-IN";
-    u.rate=0.82;
+    u.lang='hi-IN';
+    u.rate=0.88;
     u.pitch=1.0;
     u.volume=1;
     const voices=window.speechSynthesis.getVoices();
-    const indian=voices.find(v=>/^en-IN$/i.test(v.lang)) ||
-                 voices.find(v=>/India/i.test(v.name)) ||
-                 voices.find(v=>/^en-GB$/i.test(v.lang)) ||
-                 voices.find(v=>/^en-US$/i.test(v.lang));
-    if(indian) u.voice=indian;
+    const v=voices.find(x=>/^hi-IN$/i.test(x.lang)) ||
+            voices.find(x=>/Hindi|India/i.test(x.name+' '+x.lang));
+    if(v) u.voice=v;
     window.speechSynthesis.speak(u);
-  }catch(e){console.log("Voice unavailable",e);}
+  }catch(e){console.log('Voice unavailable',e);}
 }
 
+// Load the Hindi voice list before speaking.
+if('speechSynthesis' in window){ window.speechSynthesis.onvoiceschanged=()=>{}; }
 
 function adminLogin(){
   const modal=document.getElementById("rkLoginModal");
@@ -165,13 +165,13 @@ function adminLogin(){
   if(!modal||!input) return;
   modal.classList.add("show");
   if(err) err.style.display="none";
-  if(voice){voice.textContent="🔊 Please enter admin password";voice.classList.add("show");}
+  if(voice){voice.textContent="🔊 कृपया एडमिन पासवर्ड डालें";voice.classList.add("show");}
   input.value="";
   input.type="password";
   const eye=document.querySelector(".rk-eye");
   if(eye){eye.textContent="👁️";eye.setAttribute("aria-label","Show password");}
   setTimeout(()=>input.focus(),100);
-  rkSpeak("Please enter admin password");
+  rkSpeak("कृपया एडमिन पासवर्ड डालें");
 }
 
 function closeRkLogin(){
@@ -203,23 +203,23 @@ function submitRkLogin(){
 
   if(!expected){
     if(err){err.textContent="Admin password is not loaded. Please make sure config.js is in the same GitHub folder.";err.style.display="block";}
-    rkSpeak("The admin password is not loaded. Please check the configuration.");
+    rkSpeak("एडमिन पासवर्ड लोड नहीं हुआ है। कृपया कॉन्फ़िगरेशन जांचें।");
     return;
   }
   if(entered!==expected){
     if(err){err.textContent="Wrong password. Please try again.";err.style.display="block";}
-    if(voice){voice.textContent="🔊 Wrong password. Please try again.";voice.classList.add("show");}
-    rkSpeak("Wrong password. Please try again.");
+    if(voice){voice.textContent="🔊 पासवर्ड गलत है, कृपया दोबारा कोशिश करें";voice.classList.add("show");}
+    rkSpeak("पासवर्ड गलत है, कृपया दोबारा कोशिश करें");
     input.focus(); input.select();
     return;
   }
   if(!panel){
     if(err){err.textContent="Admin page is missing. Please upload the latest index.html.";err.style.display="block";}
-    rkSpeak("The admin page is not available. Please upload the latest website file.");
+    rkSpeak("एडमिन पेज उपलब्ध नहीं है। कृपया वेबसाइट की नई फाइल अपलोड करें।");
     return;
   }
-  if(voice){voice.textContent="🔊 Welcome to Rakeen Admin. Opening your dashboard.";voice.classList.add("show");}
-  rkSpeak("Welcome to Rakeen Admin. Opening your dashboard.");
+  if(voice){voice.textContent="🔊 रकीन एडमिन में आपका स्वागत है। डैशबोर्ड खुल रहा है।";voice.classList.add("show");}
+  rkSpeak("रकीन एडमिन में आपका स्वागत है। डैशबोर्ड खुल रहा है।");
   closeRkLogin();
   setTimeout(function(){
     openAdmin();
@@ -254,7 +254,7 @@ function renderCards(rows){
 categoryFilter.addEventListener("change",()=>renderCards(allProducts));
 function renderDemo(){renderCards(demo.map(x=>({name:x[0],price:x[1],category:x[2],icon:x[3],description:x[4]})))}
 async function loadProducts(){if(!client){adminProducts.innerHTML='<div class="admin-empty">Supabase is not connected yet.</div>';productCount.textContent=allProducts.length;return}let {data,error}=await client.from("products").select("*").order("created_at",{ascending:false});if(error){adminProducts.innerHTML='<div class="admin-empty">'+error.message+'</div>';return}renderCards(data||[]);productCount.textContent=(data||[]).length;adminProducts.innerHTML=(data||[]).map(p=>`<div class="item"><div><b>${p.name}</b><br><span class="muted">₹${Number(p.price).toLocaleString("en-IN")} • ${p.category||"Uncategorized"}</span></div><div style="display:flex;gap:8px;flex-wrap:wrap">
-<button class="btn" onclick="editProduct('${p.id}')">✏️ Edit</button>
+<button type="button" class="btn" style="background:#0b3b22;color:#fff" onclick="openEditProduct('${p.id}')">✏️ Edit Product</button>
 <button class="btn danger" onclick="deleteProduct('${p.id}')">Delete</button>
 </div></div>`).join("")||'<div class="admin-empty">No products yet.</div>'}
 async function addProduct(){if(!client)return alert("First configure Supabase in config.js.");let p={name:pname.value.trim(),price:Number(pprice.value),category:pcat.value.trim(),icon:picon.value||"📷",description:pdesc.value.trim()};if(!p.name||!p.price)return alert("Product name and price are required.");let {error}=await client.from("products").insert(p);if(error)return alert(error.message);pname.value=pprice.value=pcat.value=picon.value=pdesc.value="";await loadProducts();alert("Product added online.")}
@@ -314,15 +314,15 @@ async function deleteProduct(id){if(confirm("Delete this product?")){let {error}
 bookingForm.addEventListener("submit",async e=>{e.preventDefault();let x={name:name.value,phone:phone.value,date:date.value,time:time.value,service:service.value,cameras:cams.value,address:address.value};if(!client){localStorage.setItem("rakeen_pending",JSON.stringify(x));msg.textContent="Demo appointment saved. Configure Supabase to make it visible to the admin online.";msg.style.display="block";return}let {error}=await client.from("appointments").insert(x);if(error){msg.textContent=error.message;msg.style.display="block";return}msg.textContent="Appointment received successfully. RAKEEN will contact you to confirm.";msg.style.display="block";bookingForm.reset();});
 async function loadAppointments(){if(!client){appointments.innerHTML='<div class="admin-empty">Supabase is not connected yet.</div>';appointmentCount.textContent="0";return}let {data,error}=await client.from("appointments").select("*").order("created_at",{ascending:false});if(error){appointments.textContent=error.message;return}appointmentCount.textContent=(data||[]).length;appointments.innerHTML=(data||[]).map(x=>`<div class="item"><div><b>${x.name}</b> • ${x.phone}<br>📅 ${x.date} ${x.time} • ${x.service} • ${x.cameras}<br>📍 ${x.address}</div></div>`).join("")||'<div class="admin-empty">No appointments yet.</div>'}
 function openAdmin(){
-  const panel=document.getElementById("admin");
-  if(!panel){ alert("Admin panel could not be found. Upload the latest index.html."); return; }
-  panel.classList.add("open");
-  panel.style.display="block";
-  const status=document.getElementById("connectionStatus");
-  if(status) status.textContent=(client)?"Online":"Connecting…";
-  panel.scrollIntoView({behavior:"smooth",block:"start"});
-  if(typeof loadAppointments==="function") loadAppointments();
-  if(typeof loadProducts==="function") loadProducts();
+  const panel=document.getElementById('admin');
+  if(!panel){ alert('Admin Dashboard section is missing from index.html.'); return; }
+  panel.classList.add('open');
+  panel.style.cssText += ';display:block !important;visibility:visible !important;opacity:1 !important;';
+  const status=document.getElementById('connectionStatus');
+  if(status) status.textContent=client?'Online':'Connecting…';
+  if(typeof loadAppointments==='function') loadAppointments();
+  if(typeof loadProducts==='function') loadProducts();
+  setTimeout(()=>panel.scrollIntoView({behavior:'smooth',block:'start'}),50);
 }
 
 function closeAdmin(){
