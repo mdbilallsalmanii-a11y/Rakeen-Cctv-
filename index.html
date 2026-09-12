@@ -7,9 +7,46 @@
 <style>
 :root{--g:#19e66b;--d:#06130d;--d2:#0b2016;--bg:#f5f8f6;--mut:#68746d}*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;font-family:Arial,sans-serif;color:#17221c;background:var(--bg)}a{text-decoration:none;color:inherit}.top{background:#020805;color:#dbe8df;padding:9px 5%;font-size:13px;display:flex;justify-content:space-between}.nav{background:var(--d);color:#fff;padding:16px 5%;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:5;border-bottom:1px solid #17472c}.logo{font-size:29px;font-weight:900;letter-spacing:1px}.logo span,.tag,.price{color:var(--g)}.links{display:flex;gap:23px;font-size:14px;font-weight:bold}.links a:hover{color:var(--g)}.btn{background:var(--g);border:0;border-radius:9px;padding:13px 19px;font-weight:800;cursor:pointer;display:inline-block}.hero{color:white;background:linear-gradient(110deg,#06140d,#0a2b19,#07110c);padding:75px 5%;display:grid;grid-template-columns:1.1fr .9fr;gap:40px;align-items:center}.tag{font-weight:900;letter-spacing:2px}.hero h1{font-size:57px;line-height:.98;margin:15px 0}.hero h1 span{color:var(--g)}.hero p{font-size:18px;line-height:1.6;color:#d6e0d9;max-width:650px}.visual{min-height:330px;border:1px solid #285d3d;border-radius:25px;background:radial-gradient(circle,#18532f,#07140d 65%);display:flex;align-items:center;justify-content:center;font-size:110px}.section{padding:65px 5%}.center{text-align:center}.section h2{font-size:38px;margin:8px 0 12px}.sub{color:var(--mut);max-width:720px;margin:0 auto 35px;line-height:1.6}.grid{display:grid;grid-template-columns:repeat(4,1fr);gap:20px}.card{background:white;border:1px solid #dce5df;border-radius:15px;padding:18px;box-shadow:0 8px 25px #173b2410}.pic{height:150px;border-radius:11px;background:linear-gradient(135deg,#e9f2ec,#cbd9d0);display:flex;align-items:center;justify-content:center;font-size:60px}.card h3{margin:15px 0 6px}.price{font-size:21px;font-weight:900}.muted{color:var(--mut);font-size:14px}.install{background:var(--d);color:#fff}.twocol{display:grid;grid-template-columns:1fr 1fr;gap:45px}.ticks{line-height:2.2;color:#dbe5df}.form{background:#fff;color:#17221c;padding:25px;border-radius:18px}.fields{display:grid;grid-template-columns:1fr 1fr;gap:13px}label{font-size:13px;font-weight:800}input,select,textarea{width:100%;padding:12px;margin-top:6px;border:1px solid #ccd7cf;border-radius:8px;font:inherit}textarea{min-height:90px}.full{grid-column:1/-1}.msg{display:none;margin-top:12px;padding:12px;border-radius:8px;background:#e9faef;color:#087632;font-weight:700}.admin{display:none;padding:28px 5% 60px;background:#eef3ef;border-top:4px solid var(--g);min-height:70vh}.admin.open{display:block}.adminbox{max-width:1150px;margin:auto}.admin-head{background:linear-gradient(135deg,#06130d,#103b23);color:#fff;border-radius:20px;padding:24px 26px;display:flex;justify-content:space-between;align-items:center;gap:20px;box-shadow:0 12px 30px #06130d20}.admin-head h2{margin:0 0 6px;font-size:30px}.admin-head p{margin:0;color:#cfe0d5}.admin-logout{background:#fff;color:#102018}.admin-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:15px;margin:18px 0}.stat{background:#fff;border:1px solid #dce5df;border-radius:16px;padding:18px;box-shadow:0 6px 20px #173b2410}.stat small{display:block;color:#68746d;font-weight:700;margin-bottom:7px}.stat b{font-size:28px;color:#0c2a19}.admin-card{background:#fff;border:1px solid #dce5df;border-radius:18px;padding:22px;margin-top:18px;box-shadow:0 6px 20px #173b2410}.admin-card h3{margin:0 0 5px;font-size:21px}.admin-card .hint{margin:0 0 18px;color:#68746d;font-size:13px}.admin-list{margin-top:15px}.item{border:1px solid #e0e7e2;padding:14px;border-radius:12px;margin:9px 0;background:#fafcfb;display:flex;align-items:center;justify-content:space-between;gap:12px}.danger{background:#ffe5e5;color:#a01818}.admin-form .btn{margin-top:5px}.admin-empty{padding:14px;border-radius:12px;background:#f3f7f4;color:#68746d}@media(max-width:700px){.admin-head{align-items:flex-start;flex-direction:column}.admin-head h2{font-size:25px}.admin-stats{grid-template-columns:1fr}.item{align-items:flex-start;flex-direction:column}}.footer{background:#020a06;color:#c9d6ce;padding:45px 5% 20px}.footgrid{display:grid;grid-template-columns:2fr 1fr 1fr;gap:40px}.footer h3{color:#fff}.copy{border-top:1px solid #173222;margin-top:30px;padding-top:18px;font-size:13px}.wa{position:fixed;right:20px;bottom:20px;width:58px;height:58px;border-radius:50%;background:#25d366;color:white;display:flex;align-items:center;justify-content:center;font-size:26px;z-index:8}
 @media(max-width:850px){.links{display:none}.hero,.twocol{grid-template-columns:1fr}.hero h1{font-size:43px}.grid{grid-template-columns:1fr 1fr}.footgrid{grid-template-columns:1fr}.fields{grid-template-columns:1fr}.full{grid-column:auto}}@media(max-width:520px){.grid{grid-template-columns:1fr}.top{font-size:11px}.hero{padding:55px 5%}}
+
+/* RAKEEN custom admin login */
+.rk-login-overlay{display:none;position:fixed;inset:0;background:rgba(2,10,6,.72);backdrop-filter:blur(7px);z-index:99999;align-items:center;justify-content:center;padding:20px}
+.rk-login-overlay.show{display:flex}
+.rk-login-box{width:min(420px,100%);background:#fff;border-radius:24px;padding:30px;box-shadow:0 25px 80px rgba(0,0,0,.35);position:relative;animation:rkPop .18s ease-out}
+@keyframes rkPop{from{transform:translateY(10px) scale(.97);opacity:0}to{transform:none;opacity:1}}
+.rk-login-icon{width:58px;height:58px;border-radius:17px;background:#0b3b22;color:#fff;display:flex;align-items:center;justify-content:center;font-size:27px;margin-bottom:17px}
+.rk-login-box h3{margin:0;color:#092216;font-size:25px}
+.rk-login-box p{margin:7px 0 22px;color:#66736b;font-size:14px}
+.rk-pass-wrap{position:relative}
+.rk-pass-wrap input{width:100%;box-sizing:border-box;padding:14px 48px 14px 15px;border:1px solid #d7e0da;border-radius:13px;font-size:16px;outline:none}
+.rk-pass-wrap input:focus{border-color:#177443;box-shadow:0 0 0 3px rgba(23,116,67,.10)}
+.rk-eye{position:absolute;right:10px;top:50%;transform:translateY(-50%);border:0;background:transparent;font-size:19px;cursor:pointer;padding:7px;color:#506057}
+.rk-login-actions{display:flex;gap:10px;margin-top:16px}
+.rk-login-actions button{flex:1}
+.rk-cancel{background:#eef3ef!important;color:#173322!important}
+.rk-login-error{display:none;color:#b3261e;background:#fff0ef;border-radius:10px;padding:10px 12px;margin-top:12px;font-size:13px}
+
 </style>
 </head>
 <body>
+
+<div id="rkLoginModal" class="rk-login-overlay" onclick="if(event.target===this) closeRkLogin()">
+  <div class="rk-login-box" role="dialog" aria-modal="true" aria-labelledby="rkLoginTitle">
+    <div class="rk-login-icon">🔐</div>
+    <h3 id="rkLoginTitle">RAKEEN Admin Login</h3>
+    <p>Enter your administrator password to continue.</p>
+    <div class="rk-pass-wrap">
+      <input id="rkAdminPassword" type="password" placeholder="Enter password" autocomplete="current-password"
+             onkeydown="if(event.key==='Enter') submitRkLogin()">
+      <button class="rk-eye" type="button" aria-label="Show password" onclick="toggleRkPassword()">👁️</button>
+    </div>
+    <div id="rkLoginError" class="rk-login-error">Wrong password. Please try again.</div>
+    <div class="rk-login-actions">
+      <button class="btn rk-cancel" type="button" onclick="closeRkLogin()">Cancel</button>
+      <button class="btn" type="button" onclick="submitRkLogin()">Login →</button>
+    </div>
+  </div>
+</div>
+
 <div class="top"><span>Secure Today • Safer Tomorrow</span><span>📞 +966 50 004 4203 • ✉ techrakeen26@gmail.com</span></div>
 <nav class="nav"><div class="logo">RAK<span>EEN</span></div><div class="links"><a href="#home">Home</a><a href="#products">Products</a><a href="#installation">Installation</a><a href="#appointment">Appointment</a><a href="#contact">Contact</a></div><a class="btn" href="#appointment">Book Installation</a> <button class="btn" onclick="adminLogin()">Admin Login</button></nav>
 <section class="hero" id="home"><div><div class="tag">SMART SECURITY SOLUTIONS</div><h1>A SAFER <span>TOMORROW</span><br>WITH RAKEEN</h1><p>Quality CCTV cameras, reliable security products and professional installation for homes, offices, shops and businesses.</p><a class="btn" href="#products">View Products →</a> <a class="btn" style="background:transparent;color:#fff;border:1px solid #fff;margin-left:8px" href="#appointment">Book Installation</a></div><div class="visual">📹</div></section>
@@ -71,17 +108,41 @@
 <script src="config.js"></script>
 <script>
 function adminLogin(){
-  const cfg = window.RAKEEN_CONFIG || {};
-  const password = prompt("Enter Admin Password:");
-  if (password === null) return;
-  if (!cfg.ADMIN_PASSWORD) {
-    alert("Admin password is not configured. Please check config.js.");
+  const modal=document.getElementById("rkLoginModal");
+  const input=document.getElementById("rkAdminPassword");
+  const err=document.getElementById("rkLoginError");
+  if(!modal) return;
+  modal.classList.add("show");
+  err.style.display="none";
+  input.value="";
+  setTimeout(()=>input.focus(),80);
+}
+function closeRkLogin(){
+  const modal=document.getElementById("rkLoginModal");
+  if(modal) modal.classList.remove("show");
+}
+function toggleRkPassword(){
+  const input=document.getElementById("rkAdminPassword");
+  const eye=document.querySelector(".rk-eye");
+  if(input.type==="password"){input.type="text";eye.textContent="🙈";eye.setAttribute("aria-label","Hide password")}
+  else{input.type="password";eye.textContent="👁️";eye.setAttribute("aria-label","Show password")}
+}
+function submitRkLogin(){
+  const cfg=window.RAKEEN_CONFIG||{};
+  const input=document.getElementById("rkAdminPassword");
+  const err=document.getElementById("rkLoginError");
+  if(!cfg.ADMIN_PASSWORD){
+    err.textContent="Admin password is not configured. Please check config.js.";
+    err.style.display="block";
     return;
   }
-  if (password !== cfg.ADMIN_PASSWORD) {
-    alert("Wrong admin password.");
+  if(input.value!==cfg.ADMIN_PASSWORD){
+    err.textContent="Wrong password. Please try again.";
+    err.style.display="block";
+    input.select();
     return;
   }
+  closeRkLogin();
   openAdmin();
 }
 </script>
