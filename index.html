@@ -24,7 +24,7 @@
 <section class="admin" id="admin"><div class="adminbox"><h2>RAKEEN Admin Panel</h2><p class="muted">This panel uses Supabase. Add products and view customer appointments online after you enter your Supabase details in <b>config.js</b>.</p><div class="form"><div class="fields"><div><label>Product name</label><input id="pname"></div><div><label>Price ₹</label><input id="pprice" type="number"></div><div><label>Category</label><input id="pcat"></div><div><label>Product Photo URL</label><input id="picon" placeholder="https://...jpg"></div><div class="full"><label>Description</label><input id="pdesc"></div><div class="full"><button class="btn" onclick="addProduct()">+ Add Product</button></div></div></div><h3>Appointments</h3><div id="appointments" class="admin-list muted">Loading…</div><h3>Products</h3><div id="adminProducts" class="admin-list muted">Loading…</div></div></section>
 <footer class="footer" id="contact"><div class="footgrid"><div><div class="logo">RAK<span>EEN</span></div><p>Security solutions for a safer tomorrow.</p></div><div><h3>Quick Links</h3><p><a href="#products">Products</a></p><p><a href="#installation">Installation</a></p><p><a href="#appointment">Book Appointment</a></p></div><div><h3>Contact</h3><p>📞 +966 50 004 4203</p><p>✉ techrakeen26@gmail.com</p><p>📍 Al Kharj, King Fahad Road, end of factory wall, in front of SASCO station</p></div></div><div class="copy">© 2026 RAKEEN. All rights reserved.</div></footer>
 <a class="wa" href="https://wa.me/966500044203" target="_blank">☏</a>
-<script src="config.js">
+<script src="config.js"></script>
 <script>
 function adminLogin(){
   const cfg = window.RAKEEN_CONFIG || {};
@@ -50,7 +50,6 @@ function adminLogin(){
     }
   }
 }
-</script>
 </script>
 <script>
 const cfg=window.RAKEEN_CONFIG||{};
