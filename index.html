@@ -202,6 +202,7 @@ input:focus,select:focus,textarea:focus{outline:none;border-color:#8b5cf6;box-sh
   <div class="admin-card">
     <h3>📅 Customer Appointments</h3>
     <p class="hint">Latest installation requests from your website. <b>You can permanently delete any appointment here.</b></p>
+    <div style="background:#fff7ed;border:2px solid #f97316;border-radius:12px;padding:12px;margin:12px 0;font-weight:800;color:#9a3412">🗑️ <b>DELETE APPOINTMENT:</b> Har appointment ke neeche red “Delete Appointment” button hoga. Button dabakar appointment history se permanently remove kar sakte ho.</div>
     <div id="appointments" class="admin-list muted">Loading…</div>
   </div>
 
@@ -533,7 +534,23 @@ async function cancelMyAppointment(id){
  await findMyAppointments(); if(typeof loadAppointments==="function")loadAppointments();
 }
 
-async function loadAppointments(){if(!client){document.getElementById("appointments").innerHTML='<div class="admin-empty">Supabase is not connected yet.</div>';document.getElementById("appointmentCount").textContent="0";return}let {data,error}=await client.from("appointments").select("*").order("created_at",{ascending:false});if(error){document.getElementById("appointments").textContent=error.message;return}document.getElementById("appointmentCount").textContent=(data||[]).length;document.getElementById("appointments").innerHTML=(data||[]).map(x=>`<div class="item"><div><b>${x.name||""}</b> • ${x.phone||""}<br>📅 ${x.date||""} ${x.time||""} • ${x.service||""} • ${x.cameras||""}<br>📍 ${x.address||""}</div><button class="btn" type="button" data-appointment-id="${String(x.id||'').replace(/"/g,'&quot;')}" onclick="deleteAppointment(this.dataset.appointmentId)" style="background:#b91c1c!important;color:#fff!important;margin-top:12px;width:100%;font-weight:900">🗑️ Delete Appointment</button></div>`).join("")||'<div class="admin-empty">No appointments yet.</div>'}
+async function loadAppointments(){
+  const box=document.getElementById("appointments"), count=document.getElementById("appointmentCount");
+  if(!client){box.innerHTML='<div class="admin-empty">Supabase is not connected yet.</div>';if(count)count.textContent="0";return}
+  const {data,error}=await client.from("appointments").select("*").order("created_at",{ascending:false});
+  if(error){box.innerHTML='<div class="admin-empty">'+error.message+'</div>';return}
+  if(count)count.textContent=(data||[]).length;
+  box.innerHTML=(data||[]).map(x=>{
+    const id=String(x.id||"");
+    const safeId=id.replace(/\/g,"\\").replace(/'/g,"\'");
+    return `<div class="item" style="position:relative;padding-bottom:18px;margin-bottom:12px">
+      <div><b>${x.name||""}</b> • ${x.phone||""}<br>
+      📅 ${x.date||""} ${x.time||""} • ${x.service||""} • ${x.cameras||""}<br>
+      📍 ${x.address||""}</div>
+      <button class="btn" type="button" onclick="deleteAppointment('${safeId}')" style="display:block!important;background:#dc2626!important;color:#fff!important;border:0!important;margin-top:14px;width:100%;min-height:48px;font-size:16px;font-weight:900;border-radius:10px;cursor:pointer;box-shadow:0 3px 8px rgba(0,0,0,.18)">🗑️ DELETE APPOINTMENT</button>
+    </div>`;
+  }).join("")||'<div class="admin-empty">No appointments yet.</div>';
+}
 async function deleteAppointment(id){
   if(!client){alert("Supabase is not connected.");return;}
   if(!id){alert("Appointment ID is missing.");return;}
