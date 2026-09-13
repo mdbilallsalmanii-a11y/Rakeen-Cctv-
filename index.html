@@ -536,44 +536,34 @@ async function cancelMyAppointment(id){
 
 async function loadAppointments(){
   const box=document.getElementById("appointments"), count=document.getElementById("appointmentCount");
-  if(!client){box.innerHTML='<div class="admin-empty">Supabase is not connected yet.</div>';if(count)count.textContent="0";return}
-  const {data,error}=await client.from("appointments").select("*").order("created_at",{ascending:false});
-  if(error){box.innerHTML='<div class="admin-empty">'+error.message+'</div>';return}
-  if(count)count.textContent=(data||[]).length;
-  box.innerHTML=(data||[]).map(x=>{
+  if(!box)return;
+  box.innerHTML='<div style="padding:14px;font-weight:800">Loading appointments…</div>';
+  if(!client){box.innerHTML='<div class="admin-empty">Supabase is not connected yet.</div>';if(count)count.textContent="0";return;}
+  const result=await client.from("appointments").select("*").order("created_at",{ascending:false});
+  if(result.error){box.innerHTML='<div class="admin-empty">'+result.error.message+'</div>';return;}
+  const rows=result.data||[];
+  if(count)count.textContent=rows.length;
+  if(!rows.length){box.innerHTML='<div class="admin-empty">No appointments yet.</div>';return;}
+  box.innerHTML=rows.map(x=>{
     const id=String(x.id||"");
-    const safeId=id.replace(/\\/g,"\\\\").replace(/'/g,"\\'");
-    return `<div class="item" style="position:relative;padding-bottom:18px;margin-bottom:12px">
-      <div><b>${x.name||""}</b> • ${x.phone||""}<br>
-      📅 ${x.date||""} ${x.time||""} • ${x.service||""} • ${x.cameras||""}<br>
-      📍 ${x.address||""}</div>
-      <button class="btn" type="button" onclick="deleteAppointment('${safeId}')" style="display:block!important;background:#dc2626!important;color:#fff!important;border:0!important;margin-top:14px;width:100%;min-height:48px;font-size:16px;font-weight:900;border-radius:10px;cursor:pointer;box-shadow:0 3px 8px rgba(0,0,0,.18)">🗑️ DELETE APPOINTMENT</button>
-    </div>`;
-  }).join("")||'<div class="admin-empty">No appointments yet.</div>';
+    const safe=id.replace(/\\/g,"\\\\").replace(/'/g,"\\'");
+    return '<div class="item" style="display:block!important;padding:16px!important;margin:12px 0!important">'+
+      '<div style="margin-bottom:14px"><b>'+ (x.name||"Customer") +'</b> • '+(x.phone||"")+'<br>📅 '+(x.date||"")+' '+(x.time||"")+' • '+(x.service||"")+' • '+(x.cameras||"")+'<br>📍 '+(x.address||"")+'</div>'+
+      '<button type="button" class="btn" onclick="deleteAppointment(\''+safe+'\')" style="display:block!important;width:100%!important;min-height:54px!important;background:#dc2626!important;color:#fff!important;border:0!important;border-radius:12px!important;font-size:17px!important;font-weight:900!important;cursor:pointer!important;box-shadow:0 4px 10px rgba(0,0,0,.22)!important">🗑️ DELETE APPOINTMENT</button>'+
+      '</div>';
+  }).join("");
 }
 async function deleteAppointment(id){
   if(!client){alert("Supabase is not connected.");return;}
   if(!id){alert("Appointment ID is missing.");return;}
   if(!confirm("Delete this appointment permanently? This cannot be undone."))return;
-
-  try{
-    // select() is intentional: it lets us detect RLS/policy blocking a delete
-    // instead of showing a false success when 0 rows were actually removed.
-    const {data,error}=await client.from("appointments").delete().eq("id",id).select("id");
-    if(error){
-      alert("Delete failed: " + error.message + "\n\nSupabase is likely blocking DELETE because of Row Level Security (RLS).\nAdd a DELETE policy for the role used by this website, or use authenticated admin access.");
-      return;
-    }
-    if(!data || data.length===0){
-      alert("Delete was blocked by Supabase RLS/policy. No appointment was removed.\n\nThe website button is working, but the database is refusing the DELETE request.");
-      return;
-    }
-    await loadAppointments();
-    alert("Appointment deleted successfully.");
-  }catch(err){
-    alert("Delete failed: " + (err?.message || err));
-  }
+  const result=await client.from("appointments").delete().eq("id",id).select("id");
+  if(result.error){alert("Delete failed: "+result.error.message+"\n\nThe DELETE permission/RLS policy in Supabase is blocking this action.");return;}
+  if(!result.data || !result.data.length){alert("Delete was blocked by Supabase RLS. No appointment was removed.");return;}
+  await loadAppointments();
+  alert("Appointment deleted successfully.");
 }
+
 function openAdmin(){
   const panel=document.getElementById('admin');
   if(!panel){ alert('Admin Dashboard section is missing from index.html.'); return; }
