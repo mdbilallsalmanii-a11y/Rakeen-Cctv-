@@ -151,7 +151,7 @@ input:focus,select:focus,textarea:focus{outline:none;border-color:#8b5cf6;box-sh
 </div><div class="grid" id="productGrid"></div></section>
 <section class="section install" id="installation"><div class="twocol"><div><div class="tag">PROFESSIONAL INSTALLATION</div><h2>We Install It For You</h2><p>Choose a date and time and submit your location. Your appointment is stored online for the RAKEEN admin.</p><div class="ticks">✓ Home, office, shop & industry<br>✓ Camera mounting & wiring<br>✓ DVR/NVR configuration<br>✓ Testing & customer guidance</div></div>
 <div class="form" id="appointment"><h3>📅 Book an Installation Appointment</h3><p class="hint" style="margin-top:-8px;margin-bottom:16px">CCTV, Wi-Fi & networking, access control, smart locks, video door phones and other security services.</p><form id="bookingForm"><div class="fields"><div><label>Full Name *</label><input id="name" required></div><div><label>Mobile Number *</label><input id="phone" type="tel" required></div><div><label>Date *</label><input id="date" type="date" required></div><div><label>Time *</label><input id="time" type="time" required></div><div><label>Service *</label><select id="service" required><option value="">Select service</option><option>CCTV Installation</option><option>Camera Replacement</option><option>DVR / NVR Setup</option><option>Wi-Fi Installation</option><option>Wi-Fi / Network Setup</option><option>Access Control Installation</option><option>Video Door Phone</option><option>Smart Lock Installation</option><option>Alarm System Installation</option><option>Intercom Installation</option><option>Site Inspection</option><option>Maintenance / Repair</option><option>Other / Custom Service</option></select></div><div><label>Quantity / Requirements</label><input id="cams" type="text" placeholder="e.g. 4 cameras, 2 doors, 3 Wi-Fi points"></div><div class="full" id="customServiceWrap" style="display:none"><label>Custom Service</label><input id="customService" placeholder="Write the service you need"></div><div class="full"><label>Installation Address *</label><textarea id="address" required></textarea></div><div class="full"><button class="btn" type="submit" style="width:100%">Confirm Appointment</button></div></div></form><div class="msg" id="msg"></div></div></div></section>
-<section class="section center"><div class="tag">WHY RAKEEN</div><h2>Your Security, Our Priority</h2><p class="sub">Genuine products • Professional installation • Timely service • Customer support</p></section>
+<section class="section" id="cancelAppointment"><div class="form" style="max-width:760px;margin:auto"><div class="tag">MANAGE APPOINTMENT</div><h3>❌ Cancel Your Appointment</h3><p class="hint">Enter the same mobile number used while booking.</p><div class="fields"><div class="full"><label>Mobile Number *</label><input id="cancelPhone" type="tel" placeholder="Enter your booking mobile number"></div><div class="full"><button class="btn" type="button" onclick="findMyAppointments()" style="width:100%">Find My Appointment</button></div></div><div class="msg" id="cancelMsg"></div><div id="myAppointments" style="margin-top:16px"></div></div></section><section class="section center"><div class="tag">WHY RAKEEN</div><h2>Your Security, Our Priority</h2><p class="sub">Genuine products • Professional installation • Timely service • Customer support</p></section>
 <section class="admin" id="admin">
 <div class="adminbox">
   <div class="admin-head">
@@ -215,14 +215,6 @@ input:focus,select:focus,textarea:focus{outline:none;border-color:#8b5cf6;box-sh
 <footer class="footer" id="contact"><div class="footgrid"><div><div class="logo">RAK<span>EEN</span></div><p>Security solutions for a safer tomorrow.</p></div><div><h3>Quick Links</h3><p><a href="#products">Products</a></p><p><a href="#installation">Installation</a></p><p><a href="#appointment">Book Appointment</a></p></div><div><h3>Contact</h3><p>📞 +966 50 004 4203</p><p>✉ techrakeen26@gmail.com</p><p>📍 Al Kharj, King Fahad Road, end of factory wall, in front of SASCO station</p></div></div><div class="copy">© 2026 RAKEEN. All rights reserved.</div></footer>
 <a class="wa" href="https://wa.me/966500044203" target="_blank">☏</a>
 <script src="config.js"></script>
-<script>
-// Appointment notification WhatsApp number (separate from the public/owner contact number)
-const APPOINTMENT_WHATSAPP = "966537648612";
-function sendAppointmentWhatsApp(x){
-  const text = `New RAKEEN Appointment\n\nName: ${x.name||"-"}\nPhone: ${x.phone||"-"}\nService: ${x.service||"-"}\nCameras: ${x.cameras||"-"}\nDate: ${x.date||"-"}\nTime: ${x.time||"-"}\nAddress: ${x.address||"-"}`;
-  window.open(`https://wa.me/${APPOINTMENT_WHATSAPP}?text=${encodeURIComponent(text)}`, "_blank");
-}
-</script>
 <script>
 function adminLogin(){
   const modal=document.getElementById("rkLoginModal");
@@ -507,19 +499,42 @@ serviceEl.addEventListener("change",()=>{
  customServiceEl.required=isCustom;
 });
 document.getElementById("bookingForm").addEventListener("submit",async e=>{
- e.preventDefault();
- const get=id=>document.getElementById(id);
+ e.preventDefault(); const get=id=>document.getElementById(id);
  const selectedService=get("service").value;
  const service=selectedService==="Other / Custom Service"?get("customService").value.trim():selectedService;
  const x={name:get("name").value.trim(),phone:get("phone").value.trim(),date:get("date").value,time:get("time").value,service,cameras:get("cams").value.trim(),address:get("address").value.trim()};
  const msgEl=get("msg");
  if(!service){msgEl.textContent="Please select or enter a service.";msgEl.style.display="block";return}
  if(!client){localStorage.setItem("rakeen_pending",JSON.stringify(x));msgEl.textContent="Demo appointment saved. Configure Supabase to make it visible to the admin online.";msgEl.style.display="block";return}
- const {error}=await client.from("appointments").insert(x);
+ const {data,error}=await client.from("appointments").insert(x).select().single();
  if(error){msgEl.textContent=error.message;msgEl.style.display="block";return}
- msgEl.textContent="Appointment received successfully. Opening WhatsApp…";msgEl.style.display="block";sendAppointmentWhatsApp(x);get("bookingForm").reset();customServiceWrap.style.display="none";customServiceEl.required=false;
+ msgEl.textContent="Appointment received successfully. RAKEEN will contact you to confirm.";msgEl.style.display="block";
+ get("bookingForm").reset();customServiceWrap.style.display="none";customServiceEl.required=false;
+ const waNumber="966537648612";
+ const waText=`New RAKEEN Appointment\n\nName: ${x.name}\nPhone: ${x.phone}\nDate: ${x.date}\nTime: ${x.time}\nService: ${x.service}\nRequirements: ${x.cameras||"Not specified"}\nAddress: ${x.address}`;
+ window.open(`https://wa.me/${waNumber}?text=${encodeURIComponent(waText)}`,"_blank");
 });
-async function loadAppointments(){if(!client){document.getElementById("appointments").innerHTML='<div class="admin-empty">Supabase is not connected yet.</div>';document.getElementById("appointmentCount").textContent="0";return}let {data,error}=await client.from("appointments").select("*").order("created_at",{ascending:false});if(error){document.getElementById("appointments").textContent=error.message;return}document.getElementById("appointmentCount").textContent=(data||[]).length;document.getElementById("appointments").innerHTML=(data||[]).map(x=>`<div class="item"><div><b>${x.name}</b> • ${x.phone}<br>📅 ${x.date} ${x.time} • ${x.service} • ${x.cameras}<br>📍 ${x.address}</div></div>`).join("")||'<div class="admin-empty">No appointments yet.</div>'}
+
+async function findMyAppointments(){
+ const phone=document.getElementById("cancelPhone").value.trim(), msg=document.getElementById("cancelMsg"), box=document.getElementById("myAppointments");
+ if(!phone){msg.textContent="Please enter the mobile number used for booking.";msg.style.display="block";return}
+ if(!client){msg.textContent="Online appointment system is not connected.";msg.style.display="block";return}
+ msg.style.display="none";box.innerHTML="Loading…";
+ const {data,error}=await client.from("appointments").select("*").eq("phone",phone).order("created_at",{ascending:false});
+ if(error){msg.textContent=error.message;msg.style.display="block";box.innerHTML="";return}
+ if(!data||!data.length){box.innerHTML='<div class="admin-empty">No appointment found for this mobile number.</div>';return}
+ box.innerHTML=data.map(x=>`<div class="item" style="margin-bottom:10px"><div><b>${x.name||"Customer"}</b><br>📅 ${x.date||""} ${x.time||""}<br>🛠️ ${x.service||""}<br>📍 ${x.address||""}</div><button class="btn" type="button" onclick="cancelMyAppointment('${x.id}')" style="background:#b91c1c;margin-top:10px">Cancel Appointment</button></div>`).join("");
+}
+async function cancelMyAppointment(id){
+ if(!confirm("Are you sure you want to cancel this appointment?"))return;
+ const {error}=await client.from("appointments").delete().eq("id",id);
+ if(error){alert(error.message);return}
+ document.getElementById("cancelMsg").textContent="Appointment cancelled successfully.";document.getElementById("cancelMsg").style.display="block";
+ await findMyAppointments(); if(typeof loadAppointments==="function")loadAppointments();
+}
+
+async function loadAppointments(){if(!client){document.getElementById("appointments").innerHTML='<div class="admin-empty">Supabase is not connected yet.</div>';document.getElementById("appointmentCount").textContent="0";return}let {data,error}=await client.from("appointments").select("*").order("created_at",{ascending:false});if(error){document.getElementById("appointments").textContent=error.message;return}document.getElementById("appointmentCount").textContent=(data||[]).length;document.getElementById("appointments").innerHTML=(data||[]).map(x=>`<div class="item"><div><b>${x.name||""}</b> • ${x.phone||""}<br>📅 ${x.date||""} ${x.time||""} • ${x.service||""} • ${x.cameras||""}<br>📍 ${x.address||""}</div><button class="btn" type="button" onclick="deleteAppointment('${x.id}')" style="background:#b91c1c;margin-top:10px">Delete Appointment</button></div>`).join("")||'<div class="admin-empty">No appointments yet.</div>'}
+async function deleteAppointment(id){if(!client)return;if(!confirm("Delete this appointment permanently?"))return;const {error}=await client.from("appointments").delete().eq("id",id);if(error){alert(error.message);return}await loadAppointments();alert("Appointment deleted.");}
 function openAdmin(){
   const panel=document.getElementById('admin');
   if(!panel){ alert('Admin Dashboard section is missing from index.html.'); return; }
