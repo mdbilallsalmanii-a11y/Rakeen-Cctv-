@@ -515,6 +515,14 @@ function closeAdmin(){
   window.scrollTo({top:0,behavior:"smooth"});
 }
 document.addEventListener("keydown",e=>{if(e.ctrlKey&&e.shiftKey&&e.key.toLowerCase()==="a")openAdmin()});
+// Secret admin URL: open https://your-site/#admin to show the admin login (customers see no admin button).
+function checkSecretAdminUrl(){
+  if(window.location.hash.toLowerCase()==="#admin"){
+    setTimeout(()=>adminLogin(),150);
+  }
+}
+window.addEventListener("hashchange",checkSecretAdminUrl);
 init();
+checkSecretAdminUrl();
 </script>
 </body></html>
