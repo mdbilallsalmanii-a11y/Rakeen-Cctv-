@@ -27,7 +27,58 @@
 
 
 
-.rk-login-box label{display:block;margin-top:10px;color:#24362c}.rk-login-box input{margin-bottom:4px}</style>
+.rk-login-box label{display:block;margin-top:10px;color:#24362c}.rk-login-box input{margin-bottom:4px}
+
+.rk-product-box{position:relative;max-width:720px!important;width:min(92vw,720px)!important;padding:18px!important;overflow:hidden}
+.rk-product-close{position:absolute;right:12px;top:8px;width:38px;height:38px;border:0;border-radius:50%;background:#f1ebf6;color:#3b2450;font-size:28px;line-height:1;cursor:pointer;z-index:2}
+.rk-product-image{height:320px;border-radius:16px;background:#faf7fd;display:flex;align-items:center;justify-content:center;overflow:hidden;border:1px solid #eadff1}
+.rk-product-image img{width:100%;height:100%;object-fit:contain}
+.rk-product-content{padding:18px 6px 5px}
+.rk-product-content h3{font-size:28px;margin:7px 0 10px}
+.rk-product-description{white-space:pre-wrap;color:#5f5368;line-height:1.7;font-size:15px;margin:0}
+.card{cursor:pointer}
+@media(max-width:700px){.rk-product-image{height:250px}.rk-product-content h3{font-size:23px}}
+/* RAKEEN PURPLE THEME + REFRESHED LOOK */
+:root{--g:#a855f7;--d:#12091f;--d2:#1b0d2e;--bg:#f7f3fb;--mut:#6f6478}
+body{background:var(--bg);color:#21172b}
+.top{background:#0b0612;color:#eee6f7}
+.nav{background:linear-gradient(135deg,#160a24,#28103d);border-bottom:1px solid #7c3aed}
+.logo span,.tag,.price{color:#c084fc}
+.links a:hover{color:#c084fc}
+.btn{background:linear-gradient(135deg,#a855f7,#7c3aed);color:#fff;border-radius:13px;box-shadow:0 8px 20px rgba(124,58,237,.22);transition:transform .18s ease,box-shadow .18s ease}
+.btn:hover{transform:translateY(-2px);box-shadow:0 12px 26px rgba(124,58,237,.30)}
+.hero{background:radial-gradient(circle at 80% 25%,#4c1d9560,transparent 35%),linear-gradient(120deg,#10071b,#241038,#10091a);padding-top:82px;padding-bottom:82px}
+.hero h1{letter-spacing:-1.5px}.hero h1 span{color:#c084fc}
+.visual{border:1px solid #8b5cf6;background:radial-gradient(circle,#6d28d933,#0d0716 68%);box-shadow:0 20px 60px rgba(124,58,237,.16);min-height:360px}
+.section{padding-top:72px;padding-bottom:72px}
+.section h2{letter-spacing:-.7px}
+.card{border:1px solid #e5d8ef;border-radius:20px;box-shadow:0 12px 32px rgba(74,29,107,.10);transition:transform .2s ease,box-shadow .2s ease}
+.card:hover{transform:translateY(-5px);box-shadow:0 18px 38px rgba(74,29,107,.16)}
+.pic{background:linear-gradient(135deg,#f1e8fa,#e3d3f2);border-radius:15px}
+.install{background:linear-gradient(135deg,#160a24,#29103e)}
+.form{border:1px solid #e5d8ef;box-shadow:0 12px 30px rgba(74,29,107,.10)}
+input,select,textarea{border-color:#d9c8e7;border-radius:12px}
+input:focus,select:focus,textarea:focus{outline:none;border-color:#8b5cf6;box-shadow:0 0 0 3px rgba(139,92,246,.12)}
+.msg{background:#f3e8ff;color:#6b21a8}
+.admin{background:#f0eafa;border-top-color:#a855f7}
+.admin-head{background:linear-gradient(135deg,#180a27,#4c1d72);box-shadow:0 14px 35px rgba(60,20,90,.18)}
+.stat,.admin-card{border-color:#e2d5ed;box-shadow:0 8px 25px rgba(74,29,107,.09)}
+.stat b{color:#4c1d72}.item{border-color:#eadff1;background:#fcfaff}
+.rk-login-overlay{background:rgba(20,8,31,.74)}
+.rk-login-icon{background:linear-gradient(135deg,#a855f7,#7c3aed)}
+.rk-login-box h3{color:#2e1740}
+.rk-pass-wrap input:focus{border-color:#8b5cf6;box-shadow:0 0 0 3px rgba(139,92,246,.10)}
+.rk-cancel{background:#f1ebf6!important;color:#3b2450!important}
+.footer{background:#0d0615}.copy{border-top-color:#352044}
+
+.price-control{display:flex;align-items:center;justify-content:space-between;gap:14px;margin:0 0 18px;padding:14px 16px;border:1px solid #e7d9ef;border-radius:14px;background:#fbf8fd}.toggle-btn{border:0;border-radius:999px;padding:7px 12px;min-width:76px;background:#ddd;color:#4b3a55;font-weight:800;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:7px}.toggle-btn.on{background:#7c3aed;color:#fff}.toggle-dot{width:12px;height:12px;border-radius:50%;background:#fff;box-shadow:0 1px 3px #777}.rk-price{font-weight:800;color:#6d28d9;font-size:18px;margin-top:7px}.rk-product-price{font-weight:800;color:#6d28d9;font-size:22px;margin:4px 0 12px}
+
+/* Admin login must always be visible and comfortably sized */
+.rk-login-overlay.show{display:flex!important;visibility:visible!important;opacity:1!important}
+.rk-login-box{min-width:320px;max-width:460px;width:calc(100vw - 40px);font-size:16px}
+.rk-pass-wrap input{min-height:52px;font-size:17px}
+@media(max-width:520px){.rk-login-box{width:calc(100vw - 28px);padding:24px}.rk-login-box h3{font-size:23px}}
+</style>
 </head>
 <body>
 
@@ -40,11 +91,14 @@
     <input id="rkEditId" type="hidden">
     <label>Product name *</label>
     <input id="rkEditName" placeholder="Product name">
-    <label>Price ₹ *</label>
-    <input id="rkEditPrice" type="number" min="0" placeholder="2499">
+    <label>Price (Saudi Riyal)</label>
+    <input id="rkEditPrice" type="number" min="0" step="0.01" placeholder="e.g. 299">
     <label>Category</label>
     <input id="rkEditCategory" placeholder="Camera / Wi-Fi / DVR">
-    <label>Product Photo URL</label>
+    <label>Product Photo</label>
+    <input id="rkEditPhoto" type="file" accept="image/*">
+    <small class="muted">Phone se Gallery se photo select kar sakte ho.</small>
+    <label style="margin-top:8px">Photo URL (optional)</label>
     <input id="rkEditIcon" placeholder="https://...jpg or 📷">
     <label>Description</label>
     <input id="rkEditDescription" placeholder="Short product description">
@@ -52,6 +106,19 @@
     <div class="rk-login-actions">
       <button class="btn rk-cancel" type="button" onclick="closeEditProduct()">Cancel</button>
       <button class="btn" type="button" onclick="saveEditedProduct()">💾 Save Changes</button>
+    </div>
+  </div>
+</div>
+
+<div id="rkProductModal" class="rk-login-overlay" onclick="if(event.target===this) closeProductDetails()">
+  <div class="rk-login-box rk-product-box" role="dialog" aria-modal="true" aria-labelledby="rkProductTitle">
+    <button type="button" class="rk-product-close" onclick="closeProductDetails()">×</button>
+    <div id="rkProductImage" class="rk-product-image"></div>
+    <div class="rk-product-content">
+      <div class="tag" id="rkProductCategory"></div>
+      <h3 id="rkProductTitle">Product</h3>
+      <div id="rkProductPrice" class="rk-product-price"></div>
+      <p id="rkProductDescription" class="rk-product-description"></p>
     </div>
   </div>
 </div>
@@ -76,14 +143,14 @@
 
 <div class="top"><span>Secure Today • Safer Tomorrow</span><span>📞 +966 50 004 4203 • ✉ techrakeen26@gmail.com</span></div>
 <nav class="nav"><div class="logo">RAK<span>EEN</span></div><div class="links"><a href="#home">Home</a><a href="#products">Products</a><a href="#installation">Installation</a><a href="#appointment">Appointment</a><a href="#contact">Contact</a></div><a class="btn" href="#appointment">Book Installation</a></nav>
-<section class="hero" id="home"><div><div class="tag">SMART SECURITY SOLUTIONS</div><h1>A SAFER <span>TOMORROW</span><br>WITH RAKEEN</h1><p>Quality CCTV cameras, reliable security products and professional installation for homes, offices, shops and businesses.</p><a class="btn" href="#products">View Products →</a> <a class="btn" style="background:transparent;color:#fff;border:1px solid #fff;margin-left:8px" href="#appointment">Book Installation</a></div><div class="visual">📹</div></section>
-<section class="section" id="products"><div class="center"><div class="tag">OUR PRODUCTS</div><h2>CCTV & Security Products</h2><p class="sub">Products and prices are loaded from the online database, so the admin can add or change them without editing the website.</p></div><div class="center" style="margin:0 auto 22px;max-width:850px">
+<section class="hero" id="home"><div><div class="tag">SMART SECURITY SOLUTIONS</div><h1>A SAFER <span>TOMORROW</span><br>WITH RAKEEN</h1><p>Quality CCTV cameras, reliable security products and professional installation for homes, offices, shops and businesses.</p><a class="btn" href="#products">View Products →</a> <a class="btn" style="background:transparent;color:#fff;border:1px solid #fff;margin-left:8px" href="#appointment">Book Installation</a></div><div class="visual" id="heroVisual">📹</div></section>
+<section class="section" id="products"><div class="center"><div class="tag">OUR PRODUCTS</div><h2>CCTV & Security Products</h2><p class="sub">Products are loaded from the online database, so the admin can add or change them without editing the website.</p></div><div class="center" style="margin:0 auto 22px;max-width:850px">
 <select id="categoryFilter" style="max-width:320px">
 <option value="">All Categories</option>
 </select>
 </div><div class="grid" id="productGrid"></div></section>
 <section class="section install" id="installation"><div class="twocol"><div><div class="tag">PROFESSIONAL INSTALLATION</div><h2>We Install It For You</h2><p>Choose a date and time and submit your location. Your appointment is stored online for the RAKEEN admin.</p><div class="ticks">✓ Home, office, shop & industry<br>✓ Camera mounting & wiring<br>✓ DVR/NVR configuration<br>✓ Testing & customer guidance</div></div>
-<div class="form" id="appointment"><h3>📅 Book an Installation Appointment</h3><form id="bookingForm"><div class="fields"><div><label>Full Name *</label><input id="name" required></div><div><label>Mobile Number *</label><input id="phone" type="tel" required></div><div><label>Date *</label><input id="date" type="date" required></div><div><label>Time *</label><input id="time" type="time" required></div><div><label>Service *</label><select id="service" required><option value="">Select service</option><option>CCTV Installation</option><option>Camera Replacement</option><option>DVR/NVR Setup</option><option>Site Inspection</option></select></div><div><label>Number of Cameras</label><select id="cams"><option>1–2</option><option>3–4</option><option>5–8</option><option>9+</option></select></div><div class="full"><label>Installation Address *</label><textarea id="address" required></textarea></div><div class="full"><button class="btn" type="submit" style="width:100%">Confirm Appointment</button></div></div></form><div class="msg" id="msg"></div></div></div></section>
+<div class="form" id="appointment"><h3>📅 Book an Installation Appointment</h3><p class="hint" style="margin-top:-8px;margin-bottom:16px">CCTV, Wi-Fi & networking, access control, smart locks, video door phones and other security services.</p><form id="bookingForm"><div class="fields"><div><label>Full Name *</label><input id="name" required></div><div><label>Mobile Number *</label><input id="phone" type="tel" required></div><div><label>Date *</label><input id="date" type="date" required></div><div><label>Time *</label><input id="time" type="time" required></div><div><label>Service *</label><select id="service" required><option value="">Select service</option><option>CCTV Installation</option><option>Camera Replacement</option><option>DVR / NVR Setup</option><option>Wi-Fi Installation</option><option>Wi-Fi / Network Setup</option><option>Access Control Installation</option><option>Video Door Phone</option><option>Smart Lock Installation</option><option>Alarm System Installation</option><option>Intercom Installation</option><option>Site Inspection</option><option>Maintenance / Repair</option><option>Other / Custom Service</option></select></div><div><label>Quantity / Requirements</label><input id="cams" type="text" placeholder="e.g. 4 cameras, 2 doors, 3 Wi-Fi points"></div><div class="full" id="customServiceWrap" style="display:none"><label>Custom Service</label><input id="customService" placeholder="Write the service you need"></div><div class="full"><label>Installation Address *</label><textarea id="address" required></textarea></div><div class="full"><button class="btn" type="submit" style="width:100%">Confirm Appointment</button></div></div></form><div class="msg" id="msg"></div></div></div></section>
 <section class="section center"><div class="tag">WHY RAKEEN</div><h2>Your Security, Our Priority</h2><p class="sub">Genuine products • Professional installation • Timely service • Customer support</p></section>
 <section class="admin" id="admin">
 <div class="adminbox">
@@ -103,14 +170,29 @@
   </div>
 
   <div class="admin-card">
+    <h3>🏢 Office Photo on Home Page</h3>
+    <p class="hint">Apne office ki bahar se asli photo phone se click karke ya Gallery se select karke Home page par laga sakte ho.</p>
+    <div class="form admin-form">
+      <div class="fields">
+        <div><label>📷 Take Office Photo</label><input id="heroCameraFile" type="file" accept="image/*" capture="environment"><small class="muted">Camera khulega</small></div>
+        <div><label>🖼️ Choose from Gallery</label><input id="heroGalleryFile" type="file" accept="image/*"><small class="muted">Gallery se photo select karo</small></div>
+        <div class="full"><button class="btn" type="button" onclick="saveHeroPhoto()">💾 Save Office Photo Online</button> <button class="btn" type="button" style="background:#e8eee9;color:#17301f" onclick="removeHeroPhoto()">Remove Photo</button></div>
+        <div class="full"><div id="heroPreview" class="muted"></div></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="admin-card">
     <h3>➕ Add New Product</h3>
     <p class="hint">Enter the product details below. It will appear on the customer website after saving.</p>
+    <div class="price-control"><div><b>💰 Customer Price</b><div class="hint" style="margin:3px 0 0">Turn ON to show prices on the customer website.</div></div><button type="button" id="priceToggle" class="toggle-btn" onclick="togglePriceDisplay()"><span class="toggle-dot"></span><span id="priceToggleText">OFF</span></button></div>
     <div class="form admin-form">
       <div class="fields">
         <div><label>Product name *</label><input id="pname" placeholder="e.g. 4MP Dome Camera"></div>
-        <div><label>Price ₹ *</label><input id="pprice" type="number" min="0" placeholder="2499"></div>
+        <div><label>Price (Saudi Riyal)</label><input id="pprice" type="number" min="0" step="0.01" placeholder="e.g. 299"></div>
         <div><label>Category</label><input id="pcat" placeholder="Wi-Fi / Camera / DVR"></div>
-        <div><label>Product Photo URL</label><input id="picon" placeholder="https://...jpg"></div>
+        <div><label>Product Photo</label><input id="piconFile" type="file" accept="image/*"><small class="muted">📱 Gallery se photo select karo</small></div>
+        <div><label>Photo URL (optional)</label><input id="picon" placeholder="https://...jpg"></div>
         <div class="full"><label>Description</label><input id="pdesc" placeholder="Short product description"></div>
         <div class="full"><button class="btn" onclick="addProduct()">+ Save Product Online</button></div>
       </div>
@@ -146,10 +228,6 @@ function adminLogin(){
   const eye=document.querySelector(".rk-eye");
   if(eye){eye.textContent="👁️";eye.setAttribute("aria-label","Show password");}
   setTimeout(()=>input.focus(),100);
-}
-
-function openAdminLoginFromHash(){
-  if(location.hash.toLowerCase()==="#admin") adminLogin();
 }
 
 function closeRkLogin(){
@@ -200,85 +278,261 @@ function submitRkLogin(){
   },500);
 }
 
-window.addEventListener("DOMContentLoaded",openAdminLoginFromHash);
-window.addEventListener("hashchange",openAdminLoginFromHash);
 
+// Open admin login reliably when visiting /#admin
+window.addEventListener("DOMContentLoaded", function(){
+  function checkAdminHash(){
+    if(location.hash.toLowerCase()==="#admin"){
+      setTimeout(function(){ adminLogin(); }, 50);
+    }
+  }
+  checkAdminHash();
+  window.addEventListener("hashchange", checkAdminHash);
+});
 </script>
 <script>
-(function(){
-"use strict";
 const cfg=window.RAKEEN_CONFIG||{};
-let client=null, allProducts=[];
-const $=id=>document.getElementById(id);
-const demo=[
-{name:"Dome Camera",price:2499,category:"Dome",icon:"📷",description:"Reliable indoor CCTV camera."},
-{name:"Bullet Camera",price:2999,category:"Bullet",icon:"📹",description:"Outdoor camera with clear night vision."},
-{name:"PTZ Camera",price:8999,category:"PTZ",icon:"🎥",description:"Pan, tilt and zoom security."},
-{name:"NVR/DVR System",price:4999,category:"NVR/DVR",icon:"💾",description:"Reliable video storage and recording."}
-];
+let client=null;
+async function init(){
+ if(!cfg.SUPABASE_URL||!cfg.SUPABASE_ANON_KEY){renderDemo();return}
+ const s=document.createElement("script");s.src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2";s.onload=async()=>{client=supabase.createClient(cfg.SUPABASE_URL,cfg.SUPABASE_ANON_KEY);document.getElementById("connectionStatus").textContent="Online";await loadProducts();};document.head.appendChild(s)
+}
+const demo=[["Dome Camera",2499,"Dome","📷","Reliable indoor CCTV camera."],["Bullet Camera",2999,"Bullet","📹","Outdoor camera with clear night vision."],["PTZ Camera",8999,"PTZ","🎥","Pan, tilt and zoom security."],["NVR/DVR System",4999,"NVR/DVR","💾","Reliable video storage and recording."]];
+let allProducts=[];
+let showPrices=false;
+function priceText(p){ const n=Number(p?.price||0); return n>0 ? n.toLocaleString("en-SA",{minimumFractionDigits:0,maximumFractionDigits:2})+" ر.س" : ""; }
+function updatePriceToggle(){ const b=document.getElementById("priceToggle"),t=document.getElementById("priceToggleText"); if(b)b.classList.toggle("on",showPrices); if(t)t.textContent=showPrices?"ON":"OFF"; }
+async function savePriceSetting(){
+ if(!client)return;
+ const desc=JSON.stringify({showPrice:showPrices});
+ const {data}=await client.from("products").select("id").eq("name","__RAKEEN_SETTINGS__").limit(1).maybeSingle();
+ let r;
+ if(data) r=await client.from("products").update({price:0,category:"__SITE__",icon:"",description:desc}).eq("id",data.id);
+ else r=await client.from("products").insert({name:"__RAKEEN_SETTINGS__",price:0,category:"__SITE__",icon:"",description:desc});
+ if(r?.error) throw r.error;
+}
+async function togglePriceDisplay(){ showPrices=!showPrices; updatePriceToggle(); if(!client)return; try{await savePriceSetting(); renderCards(allProducts); alert(showPrices?"Prices are now ON for customers.":"Prices are now OFF for customers.");}catch(e){showPrices=!showPrices;updatePriceToggle();alert(e.message);} }
+
 function renderCards(rows){
  allProducts=rows||[];
- const filter=$("categoryFilter"), grid=$("productGrid");
- if(!filter||!grid)return;
  const cats=[...new Set(allProducts.map(p=>p.category).filter(Boolean))];
- const old=filter.value;
- filter.innerHTML='<option value="">All Categories</option>'+cats.map(c=>`<option value="${String(c).replace(/"/g,'&quot;')}">${c}</option>`).join("");
- filter.value=cats.includes(old)?old:"";
- const shown=filter.value?allProducts.filter(p=>p.category===filter.value):allProducts;
- grid.innerHTML=shown.map(p=>{
+ const categoryFilter=document.getElementById("categoryFilter");
+ const productGrid=document.getElementById("productGrid");
+ const selected=categoryFilter.value||"";
+ categoryFilter.innerHTML='<option value="">All Categories</option>'+cats.map(c=>`<option value="${String(c).replace(/"/g,'&quot;')}">${c}</option>`).join("");
+ if(cats.includes(selected)) categoryFilter.value=selected;
+ const shown=categoryFilter.value?allProducts.filter(p=>String(p.category)===String(categoryFilter.value)):allProducts;
+ productGrid.innerHTML=shown.map((p,i)=>{
   const pic=(p.icon||"").trim();
-  const visual=/^https?:\/\//i.test(pic)?`<img src="${pic}" alt="${p.name}" style="width:100%;height:100%;object-fit:cover;border-radius:11px">`:pic||"📷";
-  return `<div class="card"><div class="pic">${visual}</div><h3>${p.name||""}</h3><div class="muted">${p.category||""}</div><p class="muted">${p.description||""}</p><div class="price">₹${Number(p.price||0).toLocaleString("en-IN")}</div></div>`;
+  const visual=(/^https?:\/\//i.test(pic)||/^data:image\//i.test(pic))?`<img src="${pic}" alt="${p.name}" style="width:100%;height:100%;object-fit:contain;border-radius:11px">`:pic||"📷";
+  const ref=JSON.stringify(String(p.id ?? p.name ?? i));
+  const price=showPrices&&Number(p.price||0)>0?`<div class="rk-price">${priceText(p)}</div>`:"";
+  return `<div class="card" onclick="openProductDetails(${ref})" role="button" tabindex="0" onkeydown="if(event.key==='Enter'||event.key===' ')openProductDetails(${ref})"><div class="pic">${visual}</div><h3>${p.name}</h3><div class="muted">${p.category||""}</div>${price}<p class="muted">${p.description||"Click to view full description"}</p></div>`;
  }).join("")||'<p class="muted">No products in this category.</p>';
 }
-function renderDemo(){renderCards(demo);const st=$("connectionStatus");if(st)st.textContent="Demo";}
-async function loadProducts(){
- if(!client){const a=$("adminProducts");if(a)a.innerHTML='<div class="admin-empty">Supabase is not connected yet.</div>';const c=$("productCount");if(c)c.textContent=allProducts.length;return;}
- const {data,error}=await client.from("products").select("*").order("created_at",{ascending:false});
- if(error){const a=$("adminProducts");if(a)a.innerHTML='<div class="admin-empty">'+error.message+'</div>';return;}
- renderCards(data||[]);
- const c=$("productCount");if(c)c.textContent=(data||[]).length;
- const a=$("adminProducts");if(a)a.innerHTML=(data||[]).map(p=>`<div class="item"><div><b>${p.name}</b><br><span class="muted">₹${Number(p.price||0).toLocaleString("en-IN")} • ${p.category||"Uncategorized"}</span></div><div style="display:flex;gap:8px;flex-wrap:wrap"><button type="button" class="btn" style="background:#0b3b22;color:#fff" onclick="openEditProduct('${p.id}')">✏️ Edit Product</button><button type="button" class="btn danger" onclick="deleteProduct('${p.id}')">Delete</button></div></div>`).join("")||'<div class="admin-empty">No products yet.</div>';
+function openProductDetails(id){
+ const p=allProducts.find(x=>String(x.id??x.name)===String(id));
+ if(!p) return;
+ const pic=(p.icon||"").trim();
+ const imageEl=document.getElementById("rkProductImage");
+ imageEl.innerHTML=(/^https?:\/\//i.test(pic)||/^data:image\//i.test(pic))?`<img src="${pic}" alt="${p.name}">`:`<div style="font-size:100px">${pic||"📷"}</div>`;
+ document.getElementById("rkProductTitle").textContent=p.name||"Product";
+ document.getElementById("rkProductCategory").textContent=p.category||"";
+ document.getElementById("rkProductPrice").textContent=showPrices?priceText(p):"";
+ document.getElementById("rkProductDescription").textContent=p.description||"No description available.";
+ document.getElementById("rkProductModal").classList.add("show");
 }
+function closeProductDetails(){
+ const m=document.getElementById("rkProductModal");
+ if(m) m.classList.remove("show");
+}
+document.getElementById("categoryFilter").addEventListener("change",()=>renderCards(allProducts));
+function renderDemo(){showPrices=false;updatePriceToggle();renderCards(demo.map(x=>({name:x[0],price:x[1],category:x[2],icon:x[3],description:x[4]})))}
+async function loadProducts(){
+ const adminProductsEl=document.getElementById("adminProducts");
+ const productCountEl=document.getElementById("productCount");
+ if(!client){
+   if(adminProductsEl) adminProductsEl.innerHTML='<div class="admin-empty">Supabase is not connected yet.</div>';
+   if(productCountEl) productCountEl.textContent=allProducts.length;
+   return;
+ }
+ const {data,error}=await client.from("products").select("*").order("created_at",{ascending:false});
+ if(error){
+   if(adminProductsEl) adminProductsEl.innerHTML='<div class="admin-empty">'+error.message+'</div>';
+   return;
+ }
+ const settings=(data||[]).find(p=>p.name==="__RAKEEN_SETTINGS__");
+ try{showPrices=!!JSON.parse(settings?.description||"{}").showPrice;}catch(e){showPrices=false;}
+ updatePriceToggle();
+ const normalProducts=(data||[]).filter(p=>p.name!=="__RAKEEN_HERO__"&&p.name!=="__RAKEEN_SETTINGS__");
+ renderCards(normalProducts);
+ await loadHeroPhoto();
+ if(productCountEl) productCountEl.textContent=normalProducts.length;
+ if(adminProductsEl) adminProductsEl.innerHTML=normalProducts.map(p=>`<div class="item"><div><b>${p.name}</b><br><span class="muted">${p.category||"Uncategorized"}</span></div><div style="display:flex;gap:8px;flex-wrap:wrap"><button type="button" class="btn" style="background:#0b3b22;color:#fff" onclick="openEditProduct('${p.id}')">✏️ Edit Product</button><button class="btn danger" onclick="deleteProduct('${p.id}')">Delete</button></div></div>`).join("")||'<div class="admin-empty">No products yet.</div>';
+}
+function compressProductImage(file){
+ return new Promise((resolve,reject)=>{
+   if(!file){resolve("");return;}
+   if(!file.type.startsWith("image/")){reject(new Error("Please select an image file."));return;}
+   const reader=new FileReader();
+   reader.onload=e=>{
+     const img=new Image();
+     img.onload=()=>{
+       const max=1200, scale=Math.min(1,max/Math.max(img.width,img.height));
+       const c=document.createElement("canvas"); c.width=Math.round(img.width*scale); c.height=Math.round(img.height*scale);
+       c.getContext("2d").drawImage(img,0,0,c.width,c.height);
+       resolve(c.toDataURL("image/jpeg",0.78));
+     };
+     img.onerror=()=>reject(new Error("Could not read the image.")); img.src=e.target.result;
+   };
+   reader.onerror=()=>reject(new Error("Could not read the selected photo."));
+   reader.readAsDataURL(file);
+ });
+}
+async function loadHeroPhoto(){
+ if(!client) return;
+ const {data,error}=await client.from("products").select("id,icon").eq("name","__RAKEEN_HERO__").limit(1).maybeSingle();
+ if(error||!data||!data.icon) return;
+ const v=document.getElementById("heroVisual");
+ if(v) v.innerHTML=`<img src="${data.icon}" alt="RAKEEN Office" style="width:100%;height:100%;object-fit:cover;border-radius:25px">`;
+ const pr=document.getElementById("heroPreview");
+ if(pr) pr.innerHTML=`<img src="${data.icon}" alt="Office preview" style="width:180px;height:110px;object-fit:cover;border-radius:12px;border:1px solid #ccd7cf">`;
+}
+async function saveHeroPhoto(){
+ if(!client) return alert("Supabase is not connected. Please check config.js.");
+ const cam=document.getElementById("heroCameraFile"), gal=document.getElementById("heroGalleryFile");
+ const file=(cam&&cam.files[0])||(gal&&gal.files[0]);
+ if(!file) return alert("Pehle office ki photo click ya select karo.");
+ try{
+   const icon=await compressProductImage(file);
+   const {data:existing}=await client.from("products").select("id").eq("name","__RAKEEN_HERO__").limit(1).maybeSingle();
+   let result;
+   if(existing) result=await client.from("products").update({icon,price:0,category:"__SITE__",description:"RAKEEN home page office photo"}).eq("id",existing.id);
+   else result=await client.from("products").insert({name:"__RAKEEN_HERO__",price:0,category:"__SITE__",icon,description:"RAKEEN home page office photo"});
+   if(result.error) return alert(result.error.message);
+   if(cam) cam.value=""; if(gal) gal.value="";
+   await loadHeroPhoto();
+   alert("Office photo website par save ho gayi.");
+ }catch(e){ alert(e.message); }
+}
+async function removeHeroPhoto(){
+ if(!client) return alert("Supabase is not connected. Please check config.js.");
+ const {error}=await client.from("products").delete().eq("name","__RAKEEN_HERO__");
+ if(error) return alert(error.message);
+ const v=document.getElementById("heroVisual"); if(v) v.textContent="📹";
+ const pr=document.getElementById("heroPreview"); if(pr) pr.innerHTML="";
+ alert("Office photo remove ho gayi.");
+}
+
 async function addProduct(){
- if(!client)return alert("First configure Supabase in config.js.");
- const p={name:$("pname").value.trim(),price:Number($("pprice").value),category:$("pcat").value.trim(),icon:$("picon").value.trim()||"📷",description:$("pdesc").value.trim()};
- if(!p.name||!Number.isFinite(p.price)||p.price<0)return alert("Product name and price are required.");
- const {error}=await client.from("products").insert(p);if(error)return alert(error.message);
- ["pname","pprice","pcat","picon","pdesc"].forEach(id=>$(id).value="");
- await loadProducts();alert("Product added online.");
+ const nameEl=document.getElementById("pname"), priceEl=document.getElementById("pprice"), catEl=document.getElementById("pcat"), iconEl=document.getElementById("picon"), fileEl=document.getElementById("piconFile"), descEl=document.getElementById("pdesc");
+ if(!client) return alert("Supabase is not connected. Please check config.js.");
+ if(!nameEl.value.trim()) return alert("Product name is required.");
+ let icon=iconEl.value.trim()||"📷";
+ try{ if(fileEl.files[0]) icon=await compressProductImage(fileEl.files[0]); }catch(e){ return alert(e.message); }
+ const p={name:nameEl.value.trim(),price:Number(priceEl.value||0),category:catEl.value.trim(),icon,description:descEl.value.trim()};
+ const {error}=await client.from("products").insert(p);
+ if(error) return alert(error.message);
+ nameEl.value="";priceEl.value="";catEl.value="";iconEl.value="";fileEl.value="";descEl.value="";
+ await loadProducts();
+ alert("Product added online.");
 }
 function openEditProduct(id){
- if(!client)return alert("Supabase is not connected yet.");
- const p=allProducts.find(x=>String(x.id)===String(id));if(!p)return alert("Product not found. Please refresh the Admin page.");
- $("rkEditId").value=p.id;$("rkEditName").value=p.name||"";$("rkEditPrice").value=p.price??"";$("rkEditCategory").value=p.category||"";$("rkEditIcon").value=p.icon||"📷";$("rkEditDescription").value=p.description||"";
- const e=$("rkEditError");if(e)e.style.display="none";$("rkEditModal").classList.add("show");
+  if(!client){ alert("Supabase is not connected yet."); return; }
+  const p=allProducts.find(x=>String(x.id)===String(id));
+  if(!p){ alert("Product not found. Please refresh the Admin page."); return; }
+  document.getElementById("rkEditId").value=p.id;
+  document.getElementById("rkEditName").value=p.name||"";
+  document.getElementById("rkEditPrice").value=Number(p.price||0);
+  document.getElementById("rkEditCategory").value=p.category||"";
+  document.getElementById("rkEditIcon").value=p.icon||"📷";
+  document.getElementById("rkEditDescription").value=p.description||"";
+  const er=document.getElementById("rkEditError"); if(er) er.style.display="none";
+  document.getElementById("rkEditModal").classList.add("show");
 }
-function closeEditProduct(){const m=$("rkEditModal");if(m)m.classList.remove("show");}
+
+function closeEditProduct(){
+  const m=document.getElementById("rkEditModal");
+  if(m) m.classList.remove("show");
+}
+
 async function saveEditedProduct(){
- const id=$("rkEditId").value,name=$("rkEditName").value.trim(),price=Number($("rkEditPrice").value),category=$("rkEditCategory").value.trim(),icon=$("rkEditIcon").value.trim()||"📷",description=$("rkEditDescription").value.trim(),er=$("rkEditError");
- if(!name||!Number.isFinite(price)||price<0){if(er){er.textContent="Please enter a valid product name and price.";er.style.display="block";}return;}
- const {error}=await client.from("products").update({name,price,category,icon,description}).eq("id",id);
- if(error){if(er){er.textContent=error.message;er.style.display="block";}return;}
- closeEditProduct();await loadProducts();alert("Product updated online.");
+  const id=document.getElementById("rkEditId").value;
+  const name=document.getElementById("rkEditName").value.trim();
+  const price=Number(document.getElementById("rkEditPrice").value||0);
+  const category=document.getElementById("rkEditCategory").value.trim();
+  let icon=document.getElementById("rkEditIcon").value.trim()||"📷";
+  const photoEl=document.getElementById("rkEditPhoto");
+  const er=document.getElementById("rkEditError");
+  if(photoEl && photoEl.files[0]){ try{ icon=await compressProductImage(photoEl.files[0]); }catch(e){ if(er){er.textContent=e.message;er.style.display="block";} return; } }
+  const description=document.getElementById("rkEditDescription").value.trim();
+
+  if(!name){
+    if(er){er.textContent="Product name is required.";er.style.display="block";}
+    return;
+  }
+  const {error}=await client.from("products").update({
+    name, price, category, icon, description
+  }).eq("id",id);
+
+  if(error){
+    if(er){er.textContent=error.message;er.style.display="block";}
+    return;
+  }
+  closeEditProduct();
+  await loadProducts();
+  alert("Product updated online.");
 }
-async function deleteProduct(id){if(!client)return;if(confirm("Delete this product?")){const {error}=await client.from("products").delete().eq("id",id);if(error)alert(error.message);else await loadProducts();}}
-async function loadAppointments(){
- const box=$("appointments"),count=$("appointmentCount");if(!box)return;
- if(!client){box.innerHTML='<div class="admin-empty">Supabase is not connected yet.</div>';if(count)count.textContent="0";return;}
- const {data,error}=await client.from("appointments").select("*").order("created_at",{ascending:false});if(error){box.textContent=error.message;return;}if(count)count.textContent=(data||[]).length;
- box.innerHTML=(data||[]).map(x=>`<div class="item"><div><b>${x.name||""}</b> • ${x.phone||""}<br>📅 ${x.date||""} ${x.time||""} • ${x.service||""} • ${x.cameras||""}<br>📍 ${x.address||""}</div></div>`).join("")||'<div class="admin-empty">No appointments yet.</div>';
+
+async function editProduct(id){
+  openEditProduct(id);
 }
-function openAdmin(){const panel=$("admin");if(!panel)return;panel.classList.add("open");const st=$("connectionStatus");if(st)st.textContent=client?"Online":"Connecting…";loadAppointments();loadProducts();setTimeout(()=>panel.scrollIntoView({behavior:"smooth",block:"start"}),50);}
-function closeAdmin(){const panel=$("admin");if(panel)panel.classList.remove("open");window.scrollTo({top:0,behavior:"smooth"});}
-window.openEditProduct=openEditProduct;window.closeEditProduct=closeEditProduct;window.saveEditedProduct=saveEditedProduct;window.deleteProduct=deleteProduct;window.addProduct=addProduct;window.openAdmin=openAdmin;window.closeAdmin=closeAdmin;
-function init(){
- const filter=$("categoryFilter");if(filter)filter.addEventListener("change",()=>renderCards(allProducts));
- const form=$("bookingForm");if(form)form.addEventListener("submit",async e=>{e.preventDefault();const x={name:$("name").value,phone:$("phone").value,date:$("date").value,time:$("time").value,service:$("service").value,cameras:$("cams").value,address:$("address").value},msg=$("msg");if(!client){localStorage.setItem("rakeen_pending",JSON.stringify(x));if(msg){msg.textContent="Demo appointment saved. Configure Supabase to make it visible to the admin online.";msg.style.display="block";}return;}const {error}=await client.from("appointments").insert(x);if(error){if(msg){msg.textContent=error.message;msg.style.display="block";}return;}if(msg){msg.textContent="Appointment received successfully. RAKEEN will contact you to confirm.";msg.style.display="block";}form.reset();});
- if(!cfg.SUPABASE_URL||!cfg.SUPABASE_ANON_KEY){renderDemo();return;}
- const s=document.createElement("script");s.src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2";s.onload=async()=>{try{client=window.supabase.createClient(cfg.SUPABASE_URL,cfg.SUPABASE_ANON_KEY);const st=$("connectionStatus");if(st)st.textContent="Online";await loadProducts();}catch(e){console.error(e);const st=$("connectionStatus");if(st)st.textContent="Error";}};s.onerror=()=>{const st=$("connectionStatus");if(st)st.textContent="Offline";};document.head.appendChild(s);
+
+
+async function deleteProduct(id){if(confirm("Delete this product?")){let {error}=await client.from("products").delete().eq("id",id);if(error)alert(error.message);else loadProducts()}}
+const serviceEl=document.getElementById("service");
+const customServiceWrap=document.getElementById("customServiceWrap");
+const customServiceEl=document.getElementById("customService");
+serviceEl.addEventListener("change",()=>{
+ const isCustom=serviceEl.value==="Other / Custom Service";
+ customServiceWrap.style.display=isCustom?"block":"none";
+ customServiceEl.required=isCustom;
+});
+document.getElementById("bookingForm").addEventListener("submit",async e=>{
+ e.preventDefault();
+ const get=id=>document.getElementById(id);
+ const selectedService=get("service").value;
+ const service=selectedService==="Other / Custom Service"?get("customService").value.trim():selectedService;
+ const x={name:get("name").value.trim(),phone:get("phone").value.trim(),date:get("date").value,time:get("time").value,service,cameras:get("cams").value.trim(),address:get("address").value.trim()};
+ const msgEl=get("msg");
+ if(!service){msgEl.textContent="Please select or enter a service.";msgEl.style.display="block";return}
+ if(!client){localStorage.setItem("rakeen_pending",JSON.stringify(x));msgEl.textContent="Demo appointment saved. Configure Supabase to make it visible to the admin online.";msgEl.style.display="block";return}
+ const {error}=await client.from("appointments").insert(x);
+ if(error){msgEl.textContent=error.message;msgEl.style.display="block";return}
+ msgEl.textContent="Appointment received successfully. RAKEEN will contact you to confirm.";msgEl.style.display="block";get("bookingForm").reset();customServiceWrap.style.display="none";customServiceEl.required=false;
+});
+async function loadAppointments(){if(!client){document.getElementById("appointments").innerHTML='<div class="admin-empty">Supabase is not connected yet.</div>';document.getElementById("appointmentCount").textContent="0";return}let {data,error}=await client.from("appointments").select("*").order("created_at",{ascending:false});if(error){document.getElementById("appointments").textContent=error.message;return}document.getElementById("appointmentCount").textContent=(data||[]).length;document.getElementById("appointments").innerHTML=(data||[]).map(x=>`<div class="item"><div><b>${x.name}</b> • ${x.phone}<br>📅 ${x.date} ${x.time} • ${x.service} • ${x.cameras}<br>📍 ${x.address}</div></div>`).join("")||'<div class="admin-empty">No appointments yet.</div>'}
+function openAdmin(){
+  const panel=document.getElementById('admin');
+  if(!panel){ alert('Admin Dashboard section is missing from index.html.'); return; }
+  panel.classList.add('open');
+  panel.style.cssText += ';display:block !important;visibility:visible !important;opacity:1 !important;';
+  const status=document.getElementById('connectionStatus');
+  if(status) status.textContent=client?'Online':'Connecting…';
+  if(typeof loadAppointments==='function') loadAppointments();
+  if(typeof loadProducts==='function') loadProducts();
+  setTimeout(()=>panel.scrollIntoView({behavior:'smooth',block:'start'}),50);
 }
-if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",init);else init();
-})();
+
+function closeAdmin(){
+  const panel=document.getElementById("admin");
+  if(panel){
+    panel.classList.remove("open");
+    panel.style.display="none";
+  }
+  window.scrollTo({top:0,behavior:"smooth"});
+}
+document.addEventListener("keydown",e=>{if(e.ctrlKey&&e.shiftKey&&e.key.toLowerCase()==="a")openAdmin()});
+init();
 </script>
 </body></html>
