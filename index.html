@@ -303,9 +303,10 @@ function renderCards(rows){
  const cats=[...new Set(allProducts.map(p=>p.category).filter(Boolean))];
  const categoryFilter=document.getElementById("categoryFilter");
  const productGrid=document.getElementById("productGrid");
- categoryFilter.innerHTML='<option value="">All Categories</option>'+cats.map(c=>`<option>${c}</option>`).join("");
  const selected=categoryFilter.value||"";
- const shown=selected?allProducts.filter(p=>p.category===selected):allProducts;
+ categoryFilter.innerHTML='<option value="">All Categories</option>'+cats.map(c=>`<option value="${String(c).replace(/"/g,'&quot;')}">${c}</option>`).join("");
+ if(cats.includes(selected)) categoryFilter.value=selected;
+ const shown=categoryFilter.value?allProducts.filter(p=>String(p.category)===String(categoryFilter.value)):allProducts;
  productGrid.innerHTML=shown.map((p,i)=>{
   const pic=(p.icon||"").trim();
   const visual=(/^https?:\/\//i.test(pic)||/^data:image\//i.test(pic))?`<img src="${pic}" alt="${p.name}" style="width:100%;height:100%;object-fit:contain;border-radius:11px">`:pic||"📷";
@@ -515,14 +516,6 @@ function closeAdmin(){
   window.scrollTo({top:0,behavior:"smooth"});
 }
 document.addEventListener("keydown",e=>{if(e.ctrlKey&&e.shiftKey&&e.key.toLowerCase()==="a")openAdmin()});
-// Secret admin URL: open https://your-site/#admin to show the admin login (customers see no admin button).
-function checkSecretAdminUrl(){
-  if(window.location.hash.toLowerCase()==="#admin"){
-    setTimeout(()=>adminLogin(),150);
-  }
-}
-window.addEventListener("hashchange",checkSecretAdminUrl);
 init();
-checkSecretAdminUrl();
 </script>
 </body></html>
