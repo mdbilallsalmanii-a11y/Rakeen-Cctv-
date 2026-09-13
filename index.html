@@ -542,7 +542,7 @@ async function loadAppointments(){
   if(count)count.textContent=(data||[]).length;
   box.innerHTML=(data||[]).map(x=>{
     const id=String(x.id||"");
-    const safeId=id.replace(/\/g,"\\").replace(/'/g,"\'");
+    const safeId=id.replace(/\\/g,"\\\\").replace(/'/g,"\\'");
     return `<div class="item" style="position:relative;padding-bottom:18px;margin-bottom:12px">
       <div><b>${x.name||""}</b> • ${x.phone||""}<br>
       📅 ${x.date||""} ${x.time||""} • ${x.service||""} • ${x.cameras||""}<br>
